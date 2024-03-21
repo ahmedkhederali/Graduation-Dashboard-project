@@ -12,9 +12,9 @@ import {
   Heading,
   Select,
 } from "@chakra-ui/react";
+
 import {
   cities,
-  degree,
   departments,
   governorates,
   qualifications,
@@ -22,7 +22,7 @@ import {
 } from "../../assets/Constant/MenuData";
 import { useNavigate } from 'react-router-dom';
 
-export default function UserChallenge() {
+export default function AddChanllenge() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -34,7 +34,7 @@ export default function UserChallenge() {
     soliderhome: "",
     solidertagneed: "",
     soliderendmam: "",
-    degree: "",
+    solidertsreeh: "",
     department: "",
     selectedGovernorate: "",
     selectedCity: "",
@@ -47,10 +47,10 @@ export default function UserChallenge() {
       [name]: value,
     });
   };
-  
+
   const handleSave = () => { 
     console.log(formData);
-    navigate("/evaluation")
+    navigate("/comments")
   };
 
   return (
@@ -67,7 +67,7 @@ export default function UserChallenge() {
       // m={10}
     >
       <Heading mb={10} fontSize={"2xl"} textAlign={"center"}>
-        اضافة معلومات الصف ضباط
+        اضافة معلومات العسكري
       </Heading>
       <Stack spacing={4}>
         <HStack>
@@ -167,19 +167,13 @@ export default function UserChallenge() {
           </FormControl>
 
           <FormControl id="Add Chanllenge">
-            <FormLabel> الدرجة</FormLabel>
-            <Select
-              placeholder="الدرجة "
-              value={formData.degree}
-              name="degree"
+            <FormLabel>تاريخ التسريح</FormLabel>
+            <Input
+              w={"100%"}
+              type="date"
+              name="solidertsreeh"
               onChange={handleFieldChange}
-            >
-              {degree.map((de) => (
-                <option key={de.id} value={de.id}>
-                  {de.name}
-                </option>
-              ))}
-            </Select>
+            />
           </FormControl>
         </HStack>
       </Stack>
@@ -270,7 +264,8 @@ export default function UserChallenge() {
           _focus={{
             bg: "blue.500",
           }}
-          onClick={ handleSave}  >
+          onClick={handleSave}
+        >
           حفظ المعلومات
         </Button>
       </Flex>
