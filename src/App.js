@@ -1,28 +1,20 @@
 import "./App.css";
-import AddChanllenge from "./Components/Add Chanllenge/AddChanllenge";
 import LargeWithNewsletter from "./Components/Footer/Footer";
 import SidebarWithHeader from "./Components/Sidebar/Sidebar";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import UserChallenge from "./Components/User Challenge/UserChallenge";
-import AddProblem from "./Components/Add Problem/AddProblem";
-import Comments from "./Components/Comments/Comments";
+import AddProblem from "./Components/Departments/AddProblem";
+import Comments from "./Components/DisplaySoliderInfo/Comments";
 import Evaluation from "./Components/Evaluation/Evaluation";
 import Complaint from "./Components/Complaint/Complaint";
-import Home from "./Components/Home/Home";
-import Help from "./Components/Help/Help";
-import Contact from "./Components/ContactUs/ContactUs";
-import SimpleThreeColumns from "./Components/AboutUs/AboutUs";
+import AddChanllenge from "./Components/Solider/AddChanllenge";
+
 
 function App() {
   return (
     <Router>
         <SidebarWithHeader />
         <Routes>
-          <Route path="/" element={<Home/>} />
-          <Route path="/aboutus" element={<SimpleThreeColumns />} />
-          <Route path="/contactus" element={<Contact />} />
-          <Route path="/help" element={<Help />} />
-
           <Route path="/add_chanllenge" element={<AddChanllenge />} />
           <Route path="/user_chanllenge" element={<UserChallenge />} />
           <Route path="/add_problem" element={<AddProblem />} />
@@ -31,7 +23,7 @@ function App() {
           <Route path="/complaint" element={<Complaint />} />
 
         </Routes>
-        <LargeWithNewsletter />
+        {/* <LargeWithNewsletter /> */}
 
     </Router>
   );

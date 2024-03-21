@@ -10,20 +10,15 @@ import {
   HStack,
   VStack,
   Icon,
-  useColorModeValue,
   Text,
   Drawer,
   DrawerContent,
   useDisclosure,
-  BoxProps,
-  FlexProps,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
+ 
   Image,
   useColorMode,
+  Heading,
+  useColorModeValue
 } from "@chakra-ui/react";
 import {
   FiHome,
@@ -44,6 +39,7 @@ import { LinkItems, LinkItemsM } from "../../assets/Constant/MenuData";
 const SidebarContent = ({ onClose, ...rest }) => {
   return (
     <Box
+  
       // transition="3s ease"
       bg={useColorModeValue("white", "gray.900")}
       borderRight="1px"
@@ -51,9 +47,10 @@ const SidebarContent = ({ onClose, ...rest }) => {
       w={{ base: "full", md: 60 }}
       pos="fixed"
       h="full"
+      direction={true === 'ltr' ? 'rtl' : 'ltr'}
       {...rest}
     >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
+      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between" style={{overflow:"hidden"}}> 
         <Image
           src={Logo}
           height={28}
@@ -62,25 +59,18 @@ const SidebarContent = ({ onClose, ...rest }) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
 
-      {window.innerWidth <= 768
-        ? LinkItemsM.map((link) => {
-            return (
-              <Link to={link.dir}>
-              <NavItem key={link.name} icon={link.icon}>
-               {link.name}
-              </NavItem>
-              </Link>
-            );
-          })
-        : LinkItems.map((link) => {
-            return (
-              <Link to={link.dir}>
-              <NavItem key={link.name} icon={link.icon}>
-               {link.name}
-              </NavItem>
-              </Link>
-            );
-          })}
+     
+       {
+         LinkItems.map((link) => {
+          return (
+            <Link to={link.dir}>
+            <NavItem key={link.name} icon={link.icon}>
+             {link.name}
+            </NavItem>
+            </Link>
+          );
+        })
+       }
     </Box>
   );
 };
@@ -150,7 +140,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
         spacing={{ base: "0", md: "6" }}
         display={{ base: "none", md: "flex" }}
       >
-        {NAV_ITEMS.map((navItem) => (
+        {/* {NAV_ITEMS.map((navItem) => (
           <Box
             p={2}
             fontSize={"sm"}
@@ -163,50 +153,24 @@ const MobileNav = ({ onOpen, ...rest }) => {
           >
             <Link to={navItem.dir ?? "#"}>{navItem.name}</Link>
           </Box>
-        ))}
+        ))} */}
       </HStack>
-      <HStack spacing={{ base: "0", md: "6" }}>
+      <Heading
+          fontWeight={600}
+          fontSize={{ base: '2xl', sm: '3xl', md: '5xl' }}
+          lineHeight={'110%'}  color={'red.900'}>
+          القوات  {' '}
+          <Text as={'span'} color={useColorModeValue("gray.800", "white")}>
+          المسلحة
+          </Text>
+          <Text as={'span'} color={'black'}>
+            المصرية
+          </Text>
+        </Heading>      <HStack spacing={{ base: "0", md: "6" }}>
         <Button onClick={toggleColorMode}>
           {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
         </Button>
-        <Flex alignItems={"center"}>
-          <Menu>
-            <MenuButton
-              py={2}
-              transition="all 0.3s"
-              _focus={{ boxShadow: "none" }}
-            >
-              <HStack>
-                <Avatar
-                  size={"sm"}
-                  src={
-                    "https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                  }
-                />
-                <VStack
-                  display={{ base: "none", md: "flex" }}
-                  alignItems="flex-start"
-                  spacing="1px"
-                  ml="2"
-                >
-                  <Text fontSize="sm">UserName</Text>
-                  <Text fontSize="xs" color="gray.600">
-                    User Role
-                  </Text>
-                </VStack>
-                <Box display={{ base: "none", md: "flex" }}>
-                  <FiChevronDown />
-                </Box>
-              </HStack>
-            </MenuButton>
-            <MenuList
-              bg={useColorModeValue("white", "gray.900")}
-              borderColor={useColorModeValue("gray.200", "gray.700")}
-            >
-              <MenuItem>Sign out</MenuItem>
-            </MenuList>
-          </Menu>
-        </Flex>
+      
       </HStack>
     </Flex>
   );
@@ -242,26 +206,5 @@ const SidebarWithHeader = () => {
   );
 };
 
-const NAV_ITEMS = [
-  {
-    name: "Home",
-    dir: "/",
-    icon: FiHome,
-  },
-  {
-    name: "About Us",
-    dir: "/aboutus",
-    icon: FiHome,
-  },
-  {
-    name: "Contact US",
-    dir: "/contactus",
-    icon: FiHome,
-  },
-  {
-    name: "Help",
-    dir: "/help",
-    icon: FiHome,
-  },
-];
+
 export default SidebarWithHeader;

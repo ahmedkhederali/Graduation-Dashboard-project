@@ -1,9 +1,10 @@
 import React from 'react'
 import {
-    Box, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
+    Box, Button, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
    
   } from '@chakra-ui/react'
-import { dataloop, dataloopsf, degree, departments, governorates, qualifications, solideHome } from '../../assets/Constant/MenuData'
+import { dataloop, departments, governorates, qualifications, solideHome } from '../../assets/Constant/MenuData'
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 function convertToArabicDigits(number) {
   const digitsMap = {
     '0': '٠',
@@ -20,7 +21,12 @@ function convertToArabicDigits(number) {
 
   return String(number).replace(/[0-9]/g, digit => digitsMap[digit]);
 }
-export default function Evaluation() {
+const onClickEdit = (id) => {
+  console.log(id)
+};
+
+const onClickDelete = (id) => {}
+export default function Comments() {
   return (
     <Box py={5}   ml={{ sm: 0, md: "240px" }}>
     <TableContainer p={3} >
@@ -28,7 +34,7 @@ export default function Evaluation() {
         <Thead>
           <Tr>
             <Th>رقم</Th>
-            <Th>اسم الصف </Th>
+            <Th>اسم العسكري</Th>
             <Th>رقم العسكري</Th>
             <Th>رقم القومي</Th>
             <Th>رقم التليفون</Th>
@@ -36,7 +42,7 @@ export default function Evaluation() {
             <Th>القوة الاساسية</Th>
             <Th>تاريخ التجنيد</Th>
             <Th>تاريخ الانضمام</Th>
-            <Th> الدرجة</Th>
+            <Th>تاريخ التسريح</Th>
             <Th>المحافظة</Th>
             <Th>المدينة/القرية</Th>
             <Th>العنوان الداخلي</Th>
@@ -45,7 +51,7 @@ export default function Evaluation() {
         </Thead>
         <Tbody>
                {
-                dataloopsf?.map((item,index)=>(
+                dataloop?.map((item,index)=>(
                   <Tr>
                   <Td>{index+1}</Td>
                   <Td>{convertToArabicDigits(item.solidername)}</Td>
@@ -56,11 +62,15 @@ export default function Evaluation() {
                   <Td>{solideHome.filter(qual => qual.id === parseInt(item.soliderhome))[0]?.name}</Td>
                   <Td>{convertToArabicDigits(item.solidertagneed)}</Td>
                   <Td>{convertToArabicDigits(item.soliderendmam)}</Td>
-                  <Td>{degree.filter(qual => qual.id === parseInt(item.soliderhome))[0]?.name}</Td>
+                  <Td>{convertToArabicDigits(item.solidertsreeh)}</Td>
                   <Td>{governorates.filter(qual => parseInt(qual.id )=== parseInt(item.selectedGovernorate))[0]?.governorate_name_ar}</Td>
                   <Td>{item.selectedCity}</Td>
                   <Td>{item.address}</Td>
                   <Td>{departments.filter(qual => qual.id === parseInt(item.department))[0]?.name}</Td>
+                  <Td>
+                        <Button onClick={() => onClickEdit(item.id)} colorScheme='facebook' m={2}><EditIcon /></Button>
+                        <Button onClick={() => onClickDelete(item.id)} bg='whitesmoke' color='facebook.500'><DeleteIcon /></Button>
+                      </Td>
                 </Tr>
           
                 ))
