@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
-    Box, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
+    Box, Button, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
    
   } from '@chakra-ui/react'
-import { dataloop, dataloopsf, degree, departments, governorates, qualifications, solideHome } from '../../assets/Constant/MenuData'
+  import Swal from 'sweetalert2'
+
+import {  dataloopsf, degree, departments, governorates, qualifications, solideHome } from '../../assets/Constant/MenuData'
+import UserChallenge from '../User Challenge/UserChallenge';
+import { useNavigate } from "react-router-dom";
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+
 function convertToArabicDigits(number) {
   const digitsMap = {
     '0': '٠',
@@ -21,14 +27,43 @@ function convertToArabicDigits(number) {
   return String(number).replace(/[0-9]/g, digit => digitsMap[digit]);
 }
 export default function Evaluation() {
+  const [editable,setEditable]=useState(null)
+  const navigate = useNavigate();
+
+  const onClickEdit = (item) => {
+    setEditable(item)
+    
+  };
+  
+  const onClickDelete = (id) => {
+    Swal.fire({
+      title: "هل انت متاكد ؟",
+      text: "سيتم حذف بيانات الصف",
+      icon: "warning",
+      showCancelButton: false,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "نعم"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "تم الحذف!",
+          text: "تم حذف بيانات الصف.",
+          icon: "success"
+        });
+        navigate("/user_chanllenge")
+      }
+    });
+  }
   return (
     <Box py={5}   ml={{ sm: 0, md: "240px" }}>
-    <TableContainer p={3} >
+     {
+      editable ? <><UserChallenge mar={true} data={editable} /></>:<TableContainer p={3} >
       <Table variant='striped' >
         <Thead>
           <Tr>
             <Th>رقم</Th>
-            <Th>اسم الصف </Th>
+            <Th>اسم العسكري</Th>
             <Th>رقم العسكري</Th>
             <Th>رقم القومي</Th>
             <Th>رقم التليفون</Th>
@@ -36,7 +71,7 @@ export default function Evaluation() {
             <Th>القوة الاساسية</Th>
             <Th>تاريخ التجنيد</Th>
             <Th>تاريخ الانضمام</Th>
-            <Th> الدرجة</Th>
+            <Th>الدرجة</Th>
             <Th>المحافظة</Th>
             <Th>المدينة/القرية</Th>
             <Th>العنوان الداخلي</Th>
@@ -56,11 +91,15 @@ export default function Evaluation() {
                   <Td>{solideHome.filter(qual => qual.id === parseInt(item.soliderhome))[0]?.name}</Td>
                   <Td>{convertToArabicDigits(item.solidertagneed)}</Td>
                   <Td>{convertToArabicDigits(item.soliderendmam)}</Td>
-                  <Td>{degree.filter(qual => qual.id === parseInt(item.soliderhome))[0]?.name}</Td>
+                  <Td>{item.degree}</Td>
                   <Td>{governorates.filter(qual => parseInt(qual.id )=== parseInt(item.selectedGovernorate))[0]?.governorate_name_ar}</Td>
                   <Td>{item.selectedCity}</Td>
                   <Td>{item.address}</Td>
                   <Td>{departments.filter(qual => qual.id === parseInt(item.department))[0]?.name}</Td>
+                  <Td>
+                        <Button onClick={() => onClickEdit(item)} colorScheme='facebook' m={2}><EditIcon /></Button>
+                        <Button onClick={() => onClickDelete(item)} bg='whitesmoke' color='facebook.500'><DeleteIcon /></Button>
+                      </Td>
                 </Tr>
           
                 ))
@@ -70,6 +109,7 @@ export default function Evaluation() {
         </Tbody>
       </Table>
     </TableContainer>
+    }
   </Box>
   )
 }
