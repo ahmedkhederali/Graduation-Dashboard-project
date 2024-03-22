@@ -1,0 +1,20 @@
+{
+  "tasks": [
+    {
+      "solidername": "Mostafa Habib",
+      "phonenumber": "01207300696",
+      "qualification": "4",
+      "soliderrkm": "1234567889",
+      "soliderSSn": "29703261700557",
+      "soliderhome": "1",
+      "solidertagneed": "2024-03-01",
+      "soliderendmam": "2024-04-06",
+      "solidertsreeh": "2024-05-11",
+      "department": "4",
+      "selectedGovernorate": "1",
+      "selectedCity": "القاهرة الجديدة",
+      "address": "Cairo - Egypt",
+      "id": 1
+    }
+  ]
+}

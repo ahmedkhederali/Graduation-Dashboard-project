@@ -22,6 +22,7 @@ import {
 } from "../../assets/Constant/MenuData";
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
+import { postTaskData, updateTaskData } from "../../API/tasks.services";
 
 export default function AddChanllenge({ mar, data }) {
   const navigate = useNavigate();
@@ -49,8 +50,19 @@ export default function AddChanllenge({ mar, data }) {
     });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     console.log(formData);
+    try {
+      if(formData.id) {
+        updateTaskData('http://localhost:3001/tasks', formData.id, formData);
+
+      } else {
+        await postTaskData('http://localhost:3001/tasks', formData);
+      }
+    } catch (error) {
+      console.error('Error adding task:', error);
+    }
+
     if(data){
       Swal.fire("تم تعديل بيانات العسكري بنحاج");
       navigate("/add_chanllenge");
