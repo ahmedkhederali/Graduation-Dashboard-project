@@ -12,6 +12,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
 
 
 
@@ -29,11 +30,14 @@ export default function AddProblem() {
       [name]: value,
     });
   };
- 
-  const handleSave = () => { 
-    console.log(formData);
-    navigate("/complaint")
+  const handleSave = () => {
+      console.log(formData);
+      Swal.fire("تم اضافة بيانات القسم بنحاج");
+      navigate("/complaint");
+    
   };
+ 
+ 
   return (
     <Box
       ml={{ sm: 0, md: "250px" }}

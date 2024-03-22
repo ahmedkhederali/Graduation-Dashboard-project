@@ -20,9 +20,10 @@ import {
   qualifications,
   solideHome,
 } from "../../assets/Constant/MenuData";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 
-export default function AddChanllenge() {
+export default function AddChanllenge({ mar, data }) {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -48,14 +49,28 @@ export default function AddChanllenge() {
     });
   };
 
-  const handleSave = () => { 
+  const handleSave = () => {
     console.log(formData);
-    navigate("/comments")
+    if(data){
+      Swal.fire("تم تعديل بيانات العسكري بنحاج");
+      navigate("/add_chanllenge");
+      setTimeout(()=>{
+        navigate("/comments");
+      },1000)
+    }else{
+      Swal.fire("تم اضافة بيانات العسكري بنحاج");
+      navigate("/comments");
+    }
   };
-
+ // Set form data initially if editing
+ React.useEffect(() => {
+  if (data) {
+    setFormData(data);
+  }
+}, [data]);
   return (
     <Box
-      ml={{ sm: 0, md: "250px" }}
+      ml={mar ? { sm: 0, md: "50px" } : { sm: 0, md: "250px" }}
       rounded={"lg"}
       bg={useColorModeValue("white.100", "gray.800")}
       boxShadow={"lg"}
@@ -67,183 +82,208 @@ export default function AddChanllenge() {
       // m={10}
     >
       <Heading mb={10} fontSize={"2xl"} textAlign={"center"}>
-        اضافة معلومات العسكري
+        {data ? "تعديل معلومات العسكري" : "اضافة معلومات العسكري"}
       </Heading>
-      <Stack spacing={4}>
-        <HStack>
-          <FormControl id="Add Chanllenge">
-            <FormLabel>الاسم رباعي</FormLabel>
-            <Input
-              w={"100%"}
-              type="text"
-              name="solidername"
-              onChange={handleFieldChange}
-            />
-          </FormControl>
-          <FormControl id="Add Chanllenge">
-            <FormLabel> رقم التليفون</FormLabel>
-            <Input
-              w={"100%"}
-              type="text"
-              name="phonenumber"
-              onChange={handleFieldChange}
-            />
-          </FormControl>
-          <FormControl id="Brief">
-            <FormLabel> المؤهل</FormLabel>
-            <Select
-              placeholder="اختر المؤهل"
-              value={formData.qualification}
-              name="qualification"
-              onChange={handleFieldChange}
-            >
-              {qualifications.map((qualifi) => (
-                <option key={qualifi.id} value={qualifi.id}>
-                  {qualifi.name}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
-        </HStack>
-      </Stack>
+          <Stack spacing={4}>
+            <HStack>
+              <FormControl id="Add Chanllenge">
+                <FormLabel>الاسم رباعي</FormLabel>
+                <Input
+                  w={"100%"}
+                  type="text"
+                  name="solidername"
+                  onChange={handleFieldChange}
+                  value={formData.solidername}
+                />
+              </FormControl>
+              <FormControl id="Add Chanllenge">
+                <FormLabel> رقم التليفون</FormLabel>
+                <Input
+                  w={"100%"}
+                  type="text"
+                  name="phonenumber"
+                  onChange={handleFieldChange}
+                  value={formData.phonenumber}
 
-      <Stack spacing={4} pt={5}>
-        <HStack>
-          <FormControl id="Brief">
-            <FormLabel>الرقم العسكري</FormLabel>
-            <Input
-              w={"100%"}
-              type="text"
-              name="soliderrkm"
-              onChange={handleFieldChange}
-            />
-          </FormControl>
-          <FormControl id="Add Chanllenge">
-            <FormLabel> الرقم القومي</FormLabel>
-            <Input
-              w={"100%"}
-              type="text"
-              name="soliderSSn"
-              onChange={handleFieldChange}
-            />
-          </FormControl>
-          <FormControl id="Brief">
-            <FormLabel> القوة الاساسية</FormLabel>
-            <Select
-              placeholder="اختار القوة الاساسية"
-              value={formData.soliderhome}
-              name="soliderhome"
-              onChange={handleFieldChange}
-            >
-              {solideHome.map((dep) => (
-                <option key={dep.id} value={dep.id}>
-                  {dep.name}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
-        </HStack>
-      </Stack>
+                />
+              </FormControl>
+              <FormControl id="Brief">
+                <FormLabel> المؤهل</FormLabel>
+                <Select
+                  placeholder="اختر المؤهل"
+                  value={formData.qualification}
+                  name="qualification"
+                  onChange={handleFieldChange}
 
-      <Stack spacing={4} pt={5}>
-        <HStack>
-          <FormControl id="Brief">
-            <FormLabel> تاريخ التجنيد</FormLabel>
-            <Input
-              w={"100%"}
-              type="date"
-              name="solidertagneed"
-              onChange={handleFieldChange}
-            />
-          </FormControl>
-          <FormControl id="Brief">
-            <FormLabel> تاريخ الانضمام</FormLabel>
-            <Input
-              w={"100%"}
-              type="date"
-              name="soliderendmam"
-              onChange={handleFieldChange}
-            />
-          </FormControl>
+                >
+                  {qualifications.map((qualifi) => (
+                    <option key={qualifi.id} value={qualifi.id}>
+                      {qualifi.name}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+            </HStack>
+          </Stack>
 
-          <FormControl id="Add Chanllenge">
-            <FormLabel>تاريخ التسريح</FormLabel>
-            <Input
-              w={"100%"}
-              type="date"
-              name="solidertsreeh"
-              onChange={handleFieldChange}
-            />
-          </FormControl>
-        </HStack>
-      </Stack>
+          <Stack spacing={4} pt={5}>
+            <HStack>
+              <FormControl id="Brief">
+                <FormLabel>الرقم العسكري</FormLabel>
+                <Input
+                  w={"100%"}
+                  type="text"
+                  name="soliderrkm"
+                  onChange={handleFieldChange}
+                  value={formData.soliderrkm}
 
-      <Stack spacing={4} pt={5}>
-        <HStack>
-          <FormControl id="governorate">
-            <FormLabel>المحافظة</FormLabel>
-            <Select
-              placeholder="اختر المحافظة"
-              value={formData.selectedGovernorate}
-              name="selectedGovernorate"
-              onChange={handleFieldChange}
-            >
-              {governorates.map((governorate) => (
-                <option key={governorate.id} value={governorate.id}>
-                  {governorate.governorate_name_ar}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl id="city">
-            <FormLabel>المدينة/القرية</FormLabel>
-            <Select
-              placeholder="اختر المدينة/القرية"
-              // value={selectedCity}
-              name="selectedCity"
-              onChange={handleFieldChange}
-              disabled={!formData.selectedGovernorate}
-            >
-              {cities
-                .filter(
-                  (city) => city.governorate_id === formData.selectedGovernorate
-                )
-                .map((city) => (
-                  <option key={city.id} value={city.city_name_ar}>
-                    {city.city_name_ar}
+                />
+              </FormControl>
+              <FormControl id="Add Chanllenge">
+                <FormLabel> الرقم القومي</FormLabel>
+                <Input
+                  w={"100%"}
+                  type="text"
+                  name="soliderSSn"
+                  onChange={handleFieldChange}
+                  value={formData.soliderSSn}
+
+                />
+              </FormControl>
+              <FormControl id="Brief">
+                <FormLabel> القوة الاساسية</FormLabel>
+                <Select
+                  placeholder="اختار القوة الاساسية"
+                  value={formData.soliderhome}
+                  name="soliderhome"
+                  onChange={handleFieldChange}
+
+                >
+                  {solideHome.map((dep) => (
+                    <option key={dep.id} value={dep.id}>
+                      {dep.name}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+            </HStack>
+          </Stack>
+
+          <Stack spacing={4} pt={5}>
+            <HStack>
+              <FormControl id="Brief">
+                <FormLabel> تاريخ التجنيد</FormLabel>
+
+                <Input
+                  placeholder="Select Date and Time"
+                  size="md"
+                  type="date"
+                  name="solidertagneed"
+                  onChange={handleFieldChange}
+                  value={formData.solidertagneed}
+
+                />
+              </FormControl>
+              <FormControl id="Brief">
+                <FormLabel> تاريخ الانضمام</FormLabel>
+                <Input
+                  w={"100%"}
+                  type="date"
+                  name="soliderendmam"
+                  onChange={handleFieldChange}
+                  value={formData.soliderendmam}
+
+                />
+              </FormControl>
+
+              <FormControl id="Add Chanllenge">
+                <FormLabel>تاريخ التسريح</FormLabel>
+                <Input
+                  w={"100%"}
+                  type="date"
+                  name="solidertsreeh"
+                  onChange={handleFieldChange}
+                  value={formData.solidertsreeh}
+
+                />
+              </FormControl>
+            </HStack>
+          </Stack>
+
+          <Stack spacing={4} pt={5}>
+            <HStack>
+              <FormControl id="governorate">
+                <FormLabel>المحافظة</FormLabel>
+                <Select
+                  placeholder="اختر المحافظة"
+                  value={formData.selectedGovernorate}
+                  name="selectedGovernorate"
+                  onChange={handleFieldChange}
+                >
+                  {governorates.map((governorate) => (
+                    <option key={governorate.id} value={governorate.id}>
+                      {governorate.governorate_name_ar}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl id="city">
+                <FormLabel>المدينة/القرية</FormLabel>
+                <Select
+                  placeholder="اختر المدينة/القرية"
+                  // value={selectedCity}
+                  name="selectedCity"
+                  onChange={handleFieldChange}
+                  disabled={!formData.selectedGovernorate}
+                  value={formData.selectedCity}
+
+                  
+                >
+                  {cities
+                    .filter(
+                      (city) =>
+                        city.governorate_id === formData.selectedGovernorate
+                    )
+                    .map((city) => (
+                      <option key={city.id} value={city.city_name_ar}>
+                        {city.city_name_ar}
+                      </option>
+                    ))}
+                </Select>
+              </FormControl>
+              <FormControl id="address">
+                <FormLabel>العنوان الداخلي</FormLabel>
+                <Input
+                  w={"100%"}
+                  type="text"
+                  name="address"
+                  onChange={handleFieldChange}
+                  value={formData.address}
+
+                />
+              </FormControl>
+            </HStack>
+          </Stack>
+
+          <Stack spacing={4} pt={5}>
+            <FormControl id="Add Chanllenge">
+              <FormLabel> القسم التابع له</FormLabel>
+              <Select
+                placeholder="اختر القسم"
+                name="department"
+                value={formData.department}
+                onChange={handleFieldChange}
+              >
+                {departments.map((dep) => (
+                  <option key={dep.id} value={dep.id}>
+                    {dep.name}
                   </option>
                 ))}
-            </Select>
-          </FormControl>
-          <FormControl id="address">
-            <FormLabel>العنوان الداخلي</FormLabel>
-            <Input
-              w={"100%"}
-              type="text"
-              name="address"
-              onChange={handleFieldChange}
-            />
-          </FormControl>
-        </HStack>
-      </Stack>
-
-      <Stack spacing={4} pt={5}>
-        <FormControl id="Add Chanllenge">
-          <FormLabel> القسم التابع له</FormLabel>
-          <Select
-            placeholder="اختر القسم"
-            name="department"
-            value={formData.department}
-            onChange={handleFieldChange}
-          >
-            {departments.map((dep) => (
-              <option key={dep.id} value={dep.id}>
-                {dep.name}
-              </option>
-            ))}
-          </Select>
-        </FormControl>
-      </Stack>
+              </Select>
+            </FormControl>
+          </Stack>
+        
+      
 
       <Flex
         justifyContent={{ base: "space-around", md: "space-around" }}
@@ -266,7 +306,7 @@ export default function AddChanllenge() {
           }}
           onClick={handleSave}
         >
-          حفظ المعلومات
+          {data ? "تعديل المعلومات" : "حفظ المعلومات"}
         </Button>
       </Flex>
     </Box>

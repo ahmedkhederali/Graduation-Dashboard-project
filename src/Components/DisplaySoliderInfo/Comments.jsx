@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Box, Button, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
    
   } from '@chakra-ui/react'
+  import Swal from 'sweetalert2'
+  import { useNavigate } from "react-router-dom";
+
 import { dataloop, departments, governorates, qualifications, solideHome } from '../../assets/Constant/MenuData'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import AddChanllenge from '../Solider/AddChanllenge';
 function convertToArabicDigits(number) {
   const digitsMap = {
     '0': '٠',
@@ -21,15 +25,41 @@ function convertToArabicDigits(number) {
 
   return String(number).replace(/[0-9]/g, digit => digitsMap[digit]);
 }
-const onClickEdit = (id) => {
-  console.log(id)
-};
 
-const onClickDelete = (id) => {}
 export default function Comments() {
+  const navigate = useNavigate();
+
+const [editable,setEditable]=useState(null)
+  const onClickEdit = (item) => {
+    setEditable(item)
+    
+  };
+  
+  const onClickDelete = (id) => {
+    Swal.fire({
+      title: "هل انت متاكد ؟",
+      text: "سيتم حذف بيانات العسكري",
+      icon: "warning",
+      showCancelButton: false,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "نعم"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "تم الحذف!",
+          text: "تم حذف بيانات العسكري.",
+          icon: "success"
+        });
+        navigate("/add_chanllenge")
+      }
+    });
+  }
+
   return (
-    <Box py={5}   ml={{ sm: 0, md: "240px" }}>
-    <TableContainer p={3} >
+    <Box py={5}  ml={{ sm: 0, md: "240px" }}>
+    {
+      editable ? <><AddChanllenge mar={true} data={editable} /></>:<TableContainer p={3} >
       <Table variant='striped' >
         <Thead>
           <Tr>
@@ -68,8 +98,8 @@ export default function Comments() {
                   <Td>{item.address}</Td>
                   <Td>{departments.filter(qual => qual.id === parseInt(item.department))[0]?.name}</Td>
                   <Td>
-                        <Button onClick={() => onClickEdit(item.id)} colorScheme='facebook' m={2}><EditIcon /></Button>
-                        <Button onClick={() => onClickDelete(item.id)} bg='whitesmoke' color='facebook.500'><DeleteIcon /></Button>
+                        <Button onClick={() => onClickEdit(item)} colorScheme='facebook' m={2}><EditIcon /></Button>
+                        <Button onClick={() => onClickDelete(item)} bg='whitesmoke' color='facebook.500'><DeleteIcon /></Button>
                       </Td>
                 </Tr>
           
@@ -80,6 +110,7 @@ export default function Comments() {
         </Tbody>
       </Table>
     </TableContainer>
+    }
   </Box>
   )
 }
