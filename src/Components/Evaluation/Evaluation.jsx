@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Box, Button, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
    
@@ -9,6 +9,7 @@ import {  dataloopsf, degree, departments, governorates, qualifications, solideH
 import UserChallenge from '../User Challenge/UserChallenge';
 import { useNavigate } from "react-router-dom";
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { deleteSafData, getSafData } from '../../API/saf.services';
 
 function convertToArabicDigits(number) {
   const digitsMap = {
@@ -51,10 +52,25 @@ export default function Evaluation() {
           text: "تم حذف بيانات الصف.",
           icon: "success"
         });
-        navigate("/user_chanllenge")
+        // navigate("/user_chanllenge")
+        deleteSafData('http://localhost:3001/saf',id);
       }
     });
   }
+
+
+  const [safData, setSafData] = useState([]);
+  useEffect(() => {
+    fetch('http://localhost:3001/saf') 
+      .then(response => response.json())
+      .then(data => {
+        setSafData(data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []); 
+
   return (
     <Box py={5}   ml={{ sm: 0, md: "240px" }}>
      {
@@ -80,8 +96,8 @@ export default function Evaluation() {
         </Thead>
         <Tbody>
                {
-                dataloopsf?.map((item,index)=>(
-                  <Tr>
+                safData?.map((item,index)=>(
+                  <Tr key={item.id}>
                   <Td>{index+1}</Td>
                   <Td>{convertToArabicDigits(item.solidername)}</Td>
                   <Td>{convertToArabicDigits(item.soliderrkm)}</Td>
@@ -98,7 +114,7 @@ export default function Evaluation() {
                   <Td>{departments.filter(qual => qual.id === parseInt(item.department))[0]?.name}</Td>
                   <Td>
                         <Button onClick={() => onClickEdit(item)} colorScheme='facebook' m={2}><EditIcon /></Button>
-                        <Button onClick={() => onClickDelete(item)} bg='whitesmoke' color='facebook.500'><DeleteIcon /></Button>
+                        <Button onClick={() => onClickDelete(item.id)} bg='whitesmoke' color='facebook.500'><DeleteIcon /></Button>
                       </Td>
                 </Tr>
           

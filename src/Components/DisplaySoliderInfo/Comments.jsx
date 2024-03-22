@@ -53,7 +53,7 @@ const [editable,setEditable]=useState(null)
           icon: "success"
         });
         // navigate("/add_chanllenge")
-        deleteTaskData('http://localhost:3001/tasks',id);
+        deleteTaskData('http://localhost:3001/saf',id);
       }
     });
   }
@@ -61,7 +61,6 @@ const [soliders, setSoliders] = useState([]);
   useEffect(() => {
         getTasksData('/db.json')
         .then(tasks => {
-           console.log("taskes", tasks)
            setSoliders(tasks)
         })
         .catch(error => {

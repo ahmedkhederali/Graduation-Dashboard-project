@@ -16,5 +16,30 @@
       "address": "Cairo - Egypt",
       "id": 1
     }
+  ],
+  "saf": [
+    {
+      "solidername": "22222222222Testtt",
+      "phonenumber": "01207300696",
+      "qualification": "3",
+      "soliderrkm": "1234567889",
+      "soliderSSn": "29703261700557",
+      "soliderhome": "2",
+      "solidertagneed": "2024-03-12",
+      "soliderendmam": "2024-03-30",
+      "degree": "",
+      "department": "1",
+      "selectedGovernorate": "15",
+      "selectedCity": "أسوان",
+      "address": "Cairo - Egypt",
+      "id": 1
+    }
+  ],
+  "department": [
+    {
+      "departmentName": "testwwwwwwwwwwww",
+      "department_present": "",
+      "id": 1
+    }
   ]
 }

@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Box, Button, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
    
   } from '@chakra-ui/react'
-import { departments } from '../../assets/Constant/MenuData'
 import { DeleteIcon } from '@chakra-ui/icons'
 import Swal from 'sweetalert2'
 import { useNavigate } from "react-router-dom";
+import { deleteDepatmentData } from '../../API/depatment.services';
 
 export default function Complaint() {
   const navigate = useNavigate();
@@ -27,10 +27,25 @@ export default function Complaint() {
           text: "تم حذف بيانات القسم.",
           icon: "success"
         });
-        navigate("/add_problem")
+        // navigate("/add_problem")
+        deleteDepatmentData('http://localhost:3001/department',id);
+
       }
     });
   }
+
+  const [department, setDepartment] = useState([]);
+  useEffect(() => {
+    fetch('http://localhost:3001/department') 
+      .then(response => response.json())
+      .then(data => {
+        setDepartment(data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []); 
+
   return (
     <Box py={5}   ml={{ sm: 0, md: "240px" }}>
     <TableContainer p={3} >
@@ -43,12 +58,12 @@ export default function Complaint() {
         </Thead>
         <Tbody>
                {
-                departments?.map((item,index)=>(
+                department?.map((item,index)=>(
                   <Tr>
                   <Td>{index+1}</Td>
-                  <Td>{item.name}</Td>
+                  <Td>{item.departmentName}</Td>
                   <Td>
-                        <Button onClick={() => onClickDelete(item)} bg='whitesmoke' color='facebook.500'><DeleteIcon /></Button>
+                        <Button onClick={() => onClickDelete(item.id)} bg='whitesmoke' color='facebook.500'><DeleteIcon /></Button>
                       </Td>
                 </Tr>
           

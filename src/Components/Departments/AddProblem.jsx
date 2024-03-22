@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'
+import { postDepatmentData } from "../../API/depatment.services";
 
 
 
@@ -30,8 +31,10 @@ export default function AddProblem() {
       [name]: value,
     });
   };
-  const handleSave = () => {
+  const handleSave = async () => {
       console.log(formData);
+      await postDepatmentData('http://localhost:3001/department', formData);
+
       Swal.fire("تم اضافة بيانات القسم بنحاج");
       navigate("/complaint");
     

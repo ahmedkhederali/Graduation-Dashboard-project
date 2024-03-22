@@ -23,6 +23,7 @@ import {
 import Swal from 'sweetalert2'
 
 import { useNavigate } from 'react-router-dom';
+import { postSafData, updateSafData } from "../../API/saf.services";
 
 export default function UserChallenge({mar,data}) {
   const navigate = useNavigate();
@@ -51,8 +52,14 @@ export default function UserChallenge({mar,data}) {
     });
   };
   
-  const handleSave = () => {
+  const handleSave = async () => {
     console.log(formData);
+    if(formData.id) {
+      updateSafData('http://localhost:3001/saf', formData.id, formData);
+
+    } else {
+      await postSafData('http://localhost:3001/saf', formData);
+    }
     if(data){
       Swal.fire("تم تعديل بيانات الصف بنحاج");
       navigate("/user_chanllenge");
