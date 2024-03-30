@@ -9,12 +9,15 @@ import {
   FiChevronDown,
 } from "react-icons/fi";
 export const LinkItems = [
-  { name: "اضافة عساكر", icon: FiHome, dir: "/add_chanllenge" },
+  { name: "اضافة عساكر", icon: FiHome, dir: "/" },
   { name: "اضافة صف ", icon: FiTrendingUp, dir: "/user_chanllenge" },
   { name: "اضافة اقسام", icon: FiCompass, dir: "/add_problem" },
+  { name: "اضافة القوة", icon: FiCompass, dir: "/solider_home" },
   { name: "عرض جميع العساكر", icon: FiStar, dir: "/comments" },
   { name: "عرض جميع الصف", icon: FiSettings, dir: "/evaluation" },
   { name: "عرض جميع الاقسام", icon: FiSettings, dir: "/complaint" },
+  { name: "عرض جميع القوي", icon: FiSettings, dir: "/allSoliderHomes" },
+
 ];
 
 export const dataloop=[

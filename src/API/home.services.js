@@ -1,5 +1,5 @@
-// this my services with crud opertaion on task
-export const postDepatmentData = async (url, newTaskData) => {
+// this my services with crud opertaion on Home
+export const postHomeData = async (url, newTaskData) => {
     fetch(url, {
             method: 'POST',
             headers: {
@@ -20,7 +20,7 @@ export const postDepatmentData = async (url, newTaskData) => {
             console.error('Error:', error);
           });
 };
-export const getDepatmentData = async (url) => {
+export const getHomeData = async (url) => {
     try {
         const response = await fetch(url);
 
@@ -36,7 +36,7 @@ export const getDepatmentData = async (url) => {
         throw error;
     }
 };
-export const deleteDepatmentData = async (url, taskId) => {
+export const deleteHomeData = async (url, taskId) => {
   fetch(`${url}/${taskId}`, {
     method: 'DELETE',
   })
@@ -51,8 +51,7 @@ export const deleteDepatmentData = async (url, taskId) => {
   });
 
 }
-
-export const updateDepatmentData = async (url, taskId, editedTask) => {
+export const updateHomeData = async (url, taskId, editedTask) => {
   fetch(`${url}/${taskId}`, {
     method: 'PUT',
     headers: {

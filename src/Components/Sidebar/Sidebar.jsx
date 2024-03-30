@@ -14,7 +14,7 @@ import {
   Drawer,
   DrawerContent,
   useDisclosure,
- 
+
   Image,
   useColorMode,
   Heading,
@@ -112,11 +112,16 @@ const NavItem = ({ icon, children, ...rest }) => {
   );
 };
 
-const MobileNav = ({ onOpen, ...rest }) => {
+const MobileNav = ({ onOpen,setAdmin, ...rest }) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const linkColor = useColorModeValue("gray.600", "gray.200");
   const linkHoverColor = useColorModeValue("gray.800", "white");
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
+  const handleLogout=()=>{
+    localStorage.removeItem("admin");
+    setAdmin(false)
+    window.location.reload()
+  }
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -170,13 +175,15 @@ const MobileNav = ({ onOpen, ...rest }) => {
         <Button onClick={toggleColorMode}>
           {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
         </Button>
-      
+        <Button onClick={handleLogout}>
+          تسجيل الخروج
+        </Button>
       </HStack>
     </Flex>
   );
 };
 
-const SidebarWithHeader = () => {
+const SidebarWithHeader = ({setAdmin}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -198,7 +205,7 @@ const SidebarWithHeader = () => {
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav onOpen={onOpen} />
+      <MobileNav onOpen={onOpen} setAdmin={setAdmin}/>
       <Box ml={{ base: 0, md: 60 }} p="4">
         {/* Content */}
       </Box>

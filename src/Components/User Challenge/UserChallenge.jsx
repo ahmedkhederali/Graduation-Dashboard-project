@@ -12,6 +12,7 @@ import {
   Heading,
   Select,
 } from "@chakra-ui/react";
+
 import {
   cities,
   degree,
@@ -20,13 +21,14 @@ import {
   qualifications,
   solideHome,
 } from "../../assets/Constant/MenuData";
+import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
-
-import { useNavigate } from 'react-router-dom';
 import { postSafData, updateSafData } from "../../API/saf.services";
 
-export default function UserChallenge({mar,data}) {
+export default function UserChallenge({ mar, data }) {
   const navigate = useNavigate();
+  const [home,setHome]=useState([])
+  const [department,setDepartment]=useState([])
 
 
   const [formData, setFormData] = useState({
@@ -51,27 +53,52 @@ export default function UserChallenge({mar,data}) {
       [name]: value,
     });
   };
-  
+
   const handleSave = async () => {
     console.log(formData);
-    if(formData.id) {
-      updateSafData('http://localhost:3001/saf', formData.id, formData);
+    try {
+      if(formData.id) {
+        updateSafData('http://localhost:3001/saf', formData.id, formData);
 
-    } else {
-      await postSafData('http://localhost:3001/saf', formData);
+      } else {
+        await postSafData('http://localhost:3001/saf', formData);
+      }
+    } catch (error) {
+      console.error('Error adding task:', error);
     }
     if(data){
       Swal.fire("تم تعديل بيانات الصف بنحاج");
-      navigate("/user_chanllenge");
+    
       setTimeout(()=>{
         navigate("/evaluation");
-      },1000)
+      },1500)
     }else{
       Swal.fire("تم اضافة بيانات الصف بنحاج");
       navigate("/evaluation");
     }
   };
-  // Set form data initially if editing
+  
+  React.useEffect(() => {
+    fetch('http://localhost:3001/home') 
+      .then(response => response.json())
+      .then(data => {
+        setHome(data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []); 
+  React.useEffect(() => {
+    fetch('http://localhost:3001/department') 
+      .then(response => response.json())
+      .then(data => {
+        setDepartment(data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+ // Set form data initially if editing
  React.useEffect(() => {
   if (data) {
     setFormData(data);
@@ -102,6 +129,7 @@ export default function UserChallenge({mar,data}) {
                   type="text"
                   name="solidername"
                   onChange={handleFieldChange}
+                  autoComplete="off"
                   value={formData.solidername}
                 />
               </FormControl>
@@ -111,6 +139,7 @@ export default function UserChallenge({mar,data}) {
                   w={"100%"}
                   type="text"
                   name="phonenumber"
+                  autoComplete="off"
                   onChange={handleFieldChange}
                   value={formData.phonenumber}
 
@@ -144,6 +173,7 @@ export default function UserChallenge({mar,data}) {
                   type="text"
                   name="soliderrkm"
                   onChange={handleFieldChange}
+                  autoComplete="off"
                   value={formData.soliderrkm}
 
                 />
@@ -154,6 +184,7 @@ export default function UserChallenge({mar,data}) {
                   w={"100%"}
                   type="text"
                   name="soliderSSn"
+                  autoComplete="off"
                   onChange={handleFieldChange}
                   value={formData.soliderSSn}
 
@@ -168,9 +199,9 @@ export default function UserChallenge({mar,data}) {
                   onChange={handleFieldChange}
 
                 >
-                  {solideHome.map((dep) => (
-                    <option key={dep.id} value={dep.id}>
-                      {dep.name}
+                  {home.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.departmentName}
                     </option>
                   ))}
                 </Select>
@@ -270,6 +301,7 @@ export default function UserChallenge({mar,data}) {
                   w={"100%"}
                   type="text"
                   name="address"
+                  autoComplete="off"
                   onChange={handleFieldChange}
                   value={formData.address}
 
@@ -287,9 +319,9 @@ export default function UserChallenge({mar,data}) {
                 value={formData.department}
                 onChange={handleFieldChange}
               >
-                {departments.map((dep) => (
+                {department.map((dep) => (
                   <option key={dep.id} value={dep.id}>
-                    {dep.name}
+                    {dep.departmentName}
                   </option>
                 ))}
               </Select>

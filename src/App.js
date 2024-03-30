@@ -8,25 +8,41 @@ import Comments from "./Components/DisplaySoliderInfo/Comments";
 import Evaluation from "./Components/Evaluation/Evaluation";
 import Complaint from "./Components/Complaint/Complaint";
 import AddChanllenge from "./Components/Solider/AddChanllenge";
+import SoliderHome from "./Components/SoliderHome/SoliderHome";
+import AllSoliderHome from "./Components/AllSoliderHome/AllSoliderHome";
+import ResetPasswordForm from "./Components/Login/Login";
+import { useEffect, useState } from "react";
 
 
 function App() {
+  const [admin,setAdmin]=useState(false)
+  const isAdminLoggedIn = !!localStorage.getItem('admin');
+  useEffect(()=>{
+    if(admin){
+      localStorage.setItem('admin',true)
+    }
+  },[isAdminLoggedIn  ])
+if(!isAdminLoggedIn &&  !admin){
+  return (<Router><ResetPasswordForm setAdmin={setAdmin} /></Router>)
+}else{
   return (
     <Router>
-        <SidebarWithHeader />
+        <SidebarWithHeader setAdmin={setAdmin}/>
         <Routes>
-          <Route path="/add_chanllenge" element={<AddChanllenge />} />
+          <Route path="/" element={<AddChanllenge />} />
           <Route path="/user_chanllenge" element={<UserChallenge />} />
+          <Route path="/solider_home" element={<SoliderHome />} />
           <Route path="/add_problem" element={<AddProblem />} />
           <Route path="/comments" element={<Comments />} />
           <Route path="/evaluation" element={<Evaluation />} />
           <Route path="/complaint" element={<Complaint />} />
-
+          <Route path="/allSoliderHomes" element={<AllSoliderHome />} />
         </Routes>
         {/* <LargeWithNewsletter /> */}
 
     </Router>
   );
+}
 }
 
 export default App;

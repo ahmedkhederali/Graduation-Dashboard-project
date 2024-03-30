@@ -26,6 +26,9 @@ import { postTaskData, updateTaskData } from "../../API/tasks.services";
 
 export default function AddChanllenge({ mar, data }) {
   const navigate = useNavigate();
+  const [home,setHome]=useState([])
+  const [department,setDepartment]=useState([])
+
 
   const [formData, setFormData] = useState({
     solidername: "",
@@ -65,15 +68,36 @@ export default function AddChanllenge({ mar, data }) {
 
     if(data){
       Swal.fire("تم تعديل بيانات العسكري بنحاج");
-      navigate("/add_chanllenge");
+      // navigate("/");
       setTimeout(()=>{
         navigate("/comments");
-      },1000)
+      },1500)
     }else{
       Swal.fire("تم اضافة بيانات العسكري بنحاج");
       navigate("/comments");
     }
   };
+  
+  React.useEffect(() => {
+    fetch('http://localhost:3001/home') 
+      .then(response => response.json())
+      .then(data => {
+        setHome(data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []); 
+  React.useEffect(() => {
+    fetch('http://localhost:3001/department') 
+      .then(response => response.json())
+      .then(data => {
+        setDepartment(data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
  // Set form data initially if editing
  React.useEffect(() => {
   if (data) {
@@ -105,6 +129,7 @@ export default function AddChanllenge({ mar, data }) {
                   type="text"
                   name="solidername"
                   onChange={handleFieldChange}
+                  autoComplete="off"
                   value={formData.solidername}
                 />
               </FormControl>
@@ -114,6 +139,7 @@ export default function AddChanllenge({ mar, data }) {
                   w={"100%"}
                   type="text"
                   name="phonenumber"
+                  autoComplete="off"
                   onChange={handleFieldChange}
                   value={formData.phonenumber}
 
@@ -145,6 +171,7 @@ export default function AddChanllenge({ mar, data }) {
                 <Input
                   w={"100%"}
                   type="text"
+                  autoComplete="off"
                   name="soliderrkm"
                   onChange={handleFieldChange}
                   value={formData.soliderrkm}
@@ -157,6 +184,7 @@ export default function AddChanllenge({ mar, data }) {
                   w={"100%"}
                   type="text"
                   name="soliderSSn"
+                  autoComplete="off"
                   onChange={handleFieldChange}
                   value={formData.soliderSSn}
 
@@ -171,9 +199,9 @@ export default function AddChanllenge({ mar, data }) {
                   onChange={handleFieldChange}
 
                 >
-                  {solideHome.map((dep) => (
-                    <option key={dep.id} value={dep.id}>
-                      {dep.name}
+                  {home.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.departmentName}
                     </option>
                   ))}
                 </Select>
@@ -269,6 +297,7 @@ export default function AddChanllenge({ mar, data }) {
                   w={"100%"}
                   type="text"
                   name="address"
+                  autoComplete="off"
                   onChange={handleFieldChange}
                   value={formData.address}
 
@@ -286,9 +315,9 @@ export default function AddChanllenge({ mar, data }) {
                 value={formData.department}
                 onChange={handleFieldChange}
               >
-                {departments.map((dep) => (
+                {department.map((dep) => (
                   <option key={dep.id} value={dep.id}>
-                    {dep.name}
+                    {dep.departmentName}
                   </option>
                 ))}
               </Select>
