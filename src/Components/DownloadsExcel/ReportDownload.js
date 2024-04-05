@@ -2,9 +2,18 @@ import ExcelJS from "exceljs";
 // import 'jspdf-autotable'; // Import jspdf-autotable
 
 const convertToXLSX = async (ReportName, extension) => {
-    debugger
+    
   const workbook = new ExcelJS.Workbook();
-  const worksheet = workbook.addWorksheet("Sheet1");
+  // const worksheet = workbook.addWorksheet("Sheet1");
+  
+  
+  const worksheet = workbook.addWorksheet('Sheet1', {
+    views: [{
+        rtl: true, // Set the right-to-left layout
+        rightToLeft:true
+    }]
+});
+
   const element = document.getElementsByClassName("mainconts")[0];
   const contentElement = element.querySelector(".content-report");
   worksheet.properties.defaultRowHeight = 25;

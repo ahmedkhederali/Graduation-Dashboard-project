@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
-    Box, Button, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
+    Box, Button, FormControl, HStack, Input, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
    
   } from '@chakra-ui/react'
 import { DeleteIcon } from '@chakra-ui/icons'
@@ -10,7 +10,9 @@ import { deleteDepatmentData } from '../../API/depatment.services';
 
 export default function Complaint() {
   const navigate = useNavigate();
-
+  const [filter, setFilter] = useState({
+    name: "",
+  });
   const onClickDelete = (id) => {
     Swal.fire({
       title: "هل انت متاكد ؟",
@@ -45,9 +47,25 @@ export default function Complaint() {
         console.error('Error fetching data:', error);
       });
   }, []); 
-
+  const filteredData = department.filter((item) => {
+    const nameMatch = item.departmentName.includes(filter.name);
+      return (
+        nameMatch
+      );
+   
+  });
   return (
     <Box py={5}   ml={{ sm: 0, md: "240px" }}>
+       <HStack>
+            <FormControl>
+              <Input
+                placeholder="ابحث بالاسم"
+                value={filter.name}
+                onChange={(e) => setFilter({ ...filter, name: e.target.value })}
+              />
+            </FormControl>
+          
+          </HStack>
     <TableContainer p={3} >
       <Table variant='striped' >
         <Thead>
@@ -58,7 +76,7 @@ export default function Complaint() {
         </Thead>
         <Tbody>
                {
-                department?.map((item,index)=>(
+                filteredData?.map((item,index)=>(
                   <Tr>
                   <Td>{index+1}</Td>
                   <Td>{item.departmentName}</Td>

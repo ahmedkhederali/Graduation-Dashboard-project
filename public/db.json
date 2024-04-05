@@ -1,56 +1,72 @@
 {
   "tasks": [
     {
-      "id": "9508",
-      "solidername": "محمد علي",
-      "phonenumber": "01018036153",
-      "qualification": "2",
-      "soliderrkm": "63032122310",
-      "soliderSSn": "241561234156120",
-      "soliderhome": "4ff5",
-      "solidertagneed": "2024-04-06",
-      "soliderendmam": "2024-04-04",
-      "solidertsreeh": "2024-03-22",
-      "department": "63c5",
-      "selectedGovernorate": "16",
-      "selectedCity": "الغنايم",
-      "address": "egypt"
+      "id": "1531",
+      "solidername": "احمد علي رمضان خضر",
+      "phonenumber": "01015036158",
+      "qualification": "3",
+      "soliderrkm": "2991101414457",
+      "soliderSSn": "2991101414457",
+      "soliderhome": "",
+      "solidertagneed": "2024-04-24",
+      "soliderendmam": "2024-04-26",
+      "solidertsreeh": "2024-04-26",
+      "department": "",
+      "selectedGovernorate": "14",
+      "selectedCity": "السويس",
+      "iskowa": true,
+      "address": "بنها"
     },
     {
-      "id": "208e",
-      "solidername": "dfvdv",
-      "phonenumber": "fdvfbvf",
-      "qualification": "2",
+      "id": "4e7d",
+      "solidername": "dscfds",
+      "phonenumber": "",
+      "qualification": "",
       "soliderrkm": "",
       "soliderSSn": "",
-      "soliderhome": "4ff5",
-      "solidertagneed": "2024-04-26",
-      "soliderendmam": "2024-04-27",
-      "solidertsreeh": "2024-04-19",
-      "department": "1f1e",
-      "selectedGovernorate": "16",
-      "selectedCity": "الغنايم",
-      "address": "fvfvf"
+      "soliderhome": "",
+      "solidertagneed": "",
+      "soliderendmam": "",
+      "solidertsreeh": "",
+      "department": "",
+      "selectedGovernorate": "",
+      "selectedCity": "",
+      "iskowa": false
+    },
+    {
+      "id": "8585",
+      "solidername": "dscdscds",
+      "phonenumber": "",
+      "qualification": "",
+      "soliderrkm": "",
+      "soliderSSn": "",
+      "soliderhome": "",
+      "solidertagneed": "",
+      "soliderendmam": "",
+      "solidertsreeh": "",
+      "department": "",
+      "selectedGovernorate": "",
+      "selectedCity": "",
+      "iskowa": false
+    },
+    {
+      "id": "490b",
+      "solidername": "dscdscds",
+      "phonenumber": "",
+      "qualification": "",
+      "soliderrkm": "",
+      "soliderSSn": "",
+      "soliderhome": "",
+      "solidertagneed": "",
+      "soliderendmam": "",
+      "solidertsreeh": "",
+      "department": "",
+      "selectedGovernorate": "",
+      "selectedCity": "",
+      "iskowa": false
     }
   ],
   "saf": [],
-  "department": [
-    {
-      "id": "1f1e",
-      "departmentName": "الافراد",
-      "department_present": ""
-    },
-    {
-      "id": "63c5",
-      "departmentName": "الحملة",
-      "department_present": ""
-    }
-  ],
-  "home": [
-    {
-      "id": "4ff5",
-      "HomeSoliderName": "",
-      "departmentName": "المستشفي الجوي العام"
-    }
-  ]
+  "department": [],
+  "home": []
 }

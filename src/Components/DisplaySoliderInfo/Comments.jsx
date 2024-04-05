@@ -28,7 +28,12 @@ import {
   qualifications,
   solideHome,
 } from "../../assets/Constant/MenuData";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import {
+  ArrowForwardIcon,
+  DeleteIcon,
+  DownloadIcon,
+  EditIcon,
+} from "@chakra-ui/icons";
 import AddChanllenge from "../Solider/AddChanllenge";
 import { deleteTaskData, getTasksData } from "../../API/tasks.services";
 import { convertToXLSX } from "../DownloadsExcel/ReportDownload";
@@ -64,7 +69,7 @@ function convertToArabicNumerals(dateString) {
     "١١",
     "١٢",
   ];
-  debugger;
+  ;
   const [year, month, day] = dateString.split("-");
 
   if (day && month && year) {
@@ -88,12 +93,26 @@ export default function Comments() {
   const [soliders, setSoliders] = useState([]);
   const [loading, setLoading] = useState(false);
 
+const isHomeofSolder = [
+  {
+    id:1,
+    name:"قوة",
+    value:true
+  },
+  {
+    id:2,
+    name:"ملحق",
+    value:false
+  }
+]
+
   const [filter, setFilter] = useState({
     name: "",
     solderrkm: "",
     soliderSSn: "",
     department: "",
     solidertsreeh: "",
+    iskowa:""
   });
   const onClickEdit = (item) => {
     setEditable(item);
@@ -152,7 +171,9 @@ export default function Comments() {
       });
   }, []);
   const filteredData = soliders.filter((item) => {
+    
     const nameMatch = item.solidername.includes(filter.name);
+    // const kowaMatch = item.iskowa.includes(filter.name);
     const solderrkmMatch = String(item.soliderrkm).includes(filter.solderrkm);
     const soliderSSnMatch = String(item.soliderSSn).includes(filter.soliderSSn);
     const soliderDepartmentMatch = String(item.department).includes(
@@ -161,21 +182,26 @@ export default function Comments() {
     const solidertsreehMatch = String(item.solidertsreeh).includes(
       filter.solidertsreeh
     );
+    // Check if iskowa matches the filter value
+
+    const iskowaMatch = String(item.iskowa).includes(filter.iskowa);
+
     if (filter.solidertsreeh) {
       return (
         nameMatch &&
         solderrkmMatch &&
         soliderSSnMatch &&
         soliderDepartmentMatch &&
-        solidertsreehMatch
+        solidertsreehMatch && 
+        iskowaMatch
       );
     } else {
       return (
-        nameMatch && solderrkmMatch && soliderSSnMatch && soliderDepartmentMatch
+        nameMatch && solderrkmMatch && soliderSSnMatch && soliderDepartmentMatch && iskowaMatch
       );
     }
   });
-
+console.log("filteredData",filteredData)
   const deletFilterDate = () => {
     console.log("resultFromFilterData", filteredData);
     Swal.fire({
@@ -210,21 +236,20 @@ export default function Comments() {
     });
   };
   const downloadReportAs = async (format) => {
-    debugger;
     try {
       // setIsAlertshow('show');
       // setErrorDisplay(t('Report is preparing'));
 
-      convertToXLSX("Sales by customer", "xlsx");
-
-     
+      convertToXLSX("كشف بجميع العساكر", "xlsx");
     } catch (err) {
       alert(err);
     }
   };
   const currentDate = new Date();
-const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
-console.log(formattedDate); // Output: 1/1/2024 (for example)
+  const formattedDate = `${currentDate.getDate()}/${
+    currentDate.getMonth() + 1
+  }/${currentDate.getFullYear()}`;
+  console.log(formattedDate); // Output: 1/1/2024 (for example)
 
   return (
     <Box py={5} ml={{ sm: 0, md: "240px" }}>
@@ -276,6 +301,22 @@ console.log(formattedDate); // Output: 1/1/2024 (for example)
                 ))}
               </Select>
             </FormControl>
+            <FormControl id="Add Chanllenge">
+              <Select
+                placeholder="قوه / ملحق"
+                name="iskowa"
+                value={filter.iskowa}
+                onChange={(e) =>
+                  setFilter({ ...filter, iskowa: e.target.value })
+                }
+              >
+                {isHomeofSolder.map((dep) => (
+                  <option key={dep.id} value={dep.value}>
+                    {dep.name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
             <FormControl>
               <Input
                 placeholder="Select Date and Time"
@@ -306,9 +347,17 @@ console.log(formattedDate); // Output: 1/1/2024 (for example)
                   حذف كل العساكر
                 </Button>
               )}
-              <Button onClick={() => downloadReportAs("xlsx")}>
-                Download Excel
-              </Button>
+
+              {filteredData.length > 0 && (
+                <Button
+                  onClick={() => downloadReportAs("xlsx")}
+                  rightIcon={<DownloadIcon />}
+                  colorScheme="teal"
+                  variant="outline"
+                >
+                  تنزيل اكسيل
+                </Button>
+              )}
             </Stack>
           </Box>
           {loading ? (
@@ -317,11 +366,6 @@ console.log(formattedDate); // Output: 1/1/2024 (for example)
             <>
               {filteredData.length !== 0 ? (
                 <main className="mainconts">
-                  {/* <div className="text-center mt-4 mb-5 content-report" style={{display:"none"}}>
-                    <p className="mb-2">القوات الجوية</p>
-                    <h4>المستشفي الجوي التخصصي</h4>
-                    <p style={{ fontSize: "0.799rem" }}>{formattedDate}</p>
-                  </div> */}
                   <TableContainer p={3}>
                     <Table variant="striped">
                       <Thead>
@@ -340,6 +384,7 @@ console.log(formattedDate); // Output: 1/1/2024 (for example)
                           <Th>المدينة/القرية</Th>
                           <Th>العنوان الداخلي</Th>
                           <Th>القسم التابع له</Th>
+                          <Th> قوة / ملحق </Th>
                         </Tr>
                       </Thead>
                       <Tbody>
@@ -390,6 +435,11 @@ console.log(formattedDate); // Output: 1/1/2024 (for example)
                                 department.filter(
                                   (qual) => qual.id === item.department
                                 )[0]?.departmentName
+                              }
+                            </Td>
+                            <Td>
+                              {
+                                item.iskowa ? "قوة" : "ملحق"
                               }
                             </Td>
                             <Td>

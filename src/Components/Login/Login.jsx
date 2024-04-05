@@ -22,7 +22,7 @@ export default function ResetPasswordForm({setAdmin}) {
         password: "",
       });
     const handleLogin =()=>{
-        debugger
+        
          if(data.email === "shafai" && data.password === "123"){
             setAdmin(true)
             localStorage.setItem('admin',true)

@@ -8,6 +8,7 @@ import {
   Heading,
   Input,
   Select,
+  Stack,
   Table,
   TableContainer,
   Tbody,
@@ -28,8 +29,9 @@ import {
 } from "../../assets/Constant/MenuData";
 import UserChallenge from "../User Challenge/UserChallenge";
 import { useNavigate } from "react-router-dom";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, DownloadIcon, EditIcon } from "@chakra-ui/icons";
 import { deleteSafData, getSafData } from "../../API/saf.services";
+import { convertToXLSX } from "../DownloadsExcel/ReportDownload";
 
 function convertToArabicDigits(number) {
   const digitsMap = {
@@ -47,6 +49,18 @@ function convertToArabicDigits(number) {
 
   return String(number).replace(/[0-9]/g, (digit) => digitsMap[digit]);
 }
+const isHomeofSolder = [
+  {
+    id:1,
+    name:"قوة",
+    value:true
+  },
+  {
+    id:2,
+    name:"ملحق",
+    value:false
+  }
+]
 export default function Evaluation() {
   const [safData, setSafData] = useState([]);
   const [home, setHome] = useState([]);
@@ -59,7 +73,8 @@ export default function Evaluation() {
     soliderSSn: "",
     department: "",
     degree: "",
-  });
+    iskowa:""
+    });
   const filteredData = safData.filter((item) => {
     const nameMatch = item.solidername.includes(filter.name);
     const solderrkmMatch = String(item.soliderrkm).includes(filter.solderrkm);
@@ -68,13 +83,16 @@ export default function Evaluation() {
       filter.department
     );
     const soliderDegreetMatch = String(item.degree).includes(filter.degree);
+ // Check if iskowa matches the filter value
 
+ const iskowaMatch = String(item.iskowa).includes(filter.iskowa);
     return (
       nameMatch &&
       solderrkmMatch &&
       soliderSSnMatch &&
       soliderDepartmentMatch &&
-      soliderDegreetMatch
+      soliderDegreetMatch &&
+      iskowaMatch
     );
   });
   const onClickEdit = (item) => {
@@ -147,7 +165,7 @@ export default function Evaluation() {
       "١١",
       "١٢",
     ];
-    debugger;
+    ;
     const [year, month, day] = dateString.split("-");
 
     if (day && month && year) {
@@ -162,6 +180,17 @@ export default function Evaluation() {
       return `${arabicDay}-${arabicMonth}-${arabicYear}`;
     }
   }
+  const downloadReportAs = async (format) => {
+    ;
+    try {
+      // setIsAlertshow('show');
+      // setErrorDisplay(t('Report is preparing'));
+
+      convertToXLSX("كشف بجميع الصف", "xlsx");
+    } catch (err) {
+      alert(err);
+    }
+  };
   return (
     <Box py={5} ml={{ sm: 0, md: "240px" }}>
       {editable ? (
@@ -214,6 +243,22 @@ export default function Evaluation() {
             </FormControl>
             <FormControl id="Add Chanllenge">
               <Select
+                placeholder="قوه / ملحق"
+                name="iskowa"
+                value={filter.iskowa}
+                onChange={(e) =>
+                  setFilter({ ...filter, iskowa: e.target.value })
+                }
+              >
+                {isHomeofSolder.map((dep) => (
+                  <option key={dep.id} value={dep.value}>
+                    {dep.name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl id="Add Chanllenge">
+              <Select
                 placeholder="اختر الدرجة"
                 value={filter.degree}
                 name="degree"
@@ -229,8 +274,24 @@ export default function Evaluation() {
               </Select>
             </FormControl>
           </HStack>
+          <Box mt={{ sm: 0, md: "10px" }}>
+            <Stack direction="row" spacing={4} className="mt-5">
+              {filteredData.length > 0 && 
+                 <Button
+                 onClick={() => downloadReportAs("xlsx")}
+                 rightIcon={<DownloadIcon />}
+                 colorScheme="teal"
+                 variant="outline"
+               >
+                 تنزيل اكسيل
+               </Button>
+              }
+           
+            </Stack>
+          </Box>
           {
             filteredData.length !==0 ?(
+              <main className="mainconts">
               <TableContainer p={3}>
             <Table variant="striped">
               <Thead>
@@ -249,6 +310,8 @@ export default function Evaluation() {
                   <Th>المدينة/القرية</Th>
                   <Th>العنوان الداخلي</Th>
                   <Th>القسم التابع له</Th>
+                  <Th> قوة / ملحق </Th>
+               
                 </Tr>
               </Thead>
               <Tbody>
@@ -301,6 +364,11 @@ export default function Evaluation() {
                       }
                     </Td>
                     <Td>
+                              {
+                                item.iskowa ? "قوة" : "ملحق"
+                              }
+                            </Td>
+                    <Td>
                       <Button
                         onClick={() => onClickEdit(item)}
                         colorScheme="facebook"
@@ -316,11 +384,13 @@ export default function Evaluation() {
                         <DeleteIcon />
                       </Button>
                     </Td>
+                    
                   </Tr>
                 ))}
               </Tbody>
             </Table>
           </TableContainer>
+          </main>
             ):(
               <Center>
               <Heading fontSize={"4xl"} className="mt-5">
