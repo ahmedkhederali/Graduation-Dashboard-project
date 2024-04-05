@@ -8,6 +8,7 @@ import {
   Heading,
   Input,
   Select,
+  Stack,
   Table,
   TableContainer,
   Tbody,
@@ -30,6 +31,7 @@ import {
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import AddChanllenge from "../Solider/AddChanllenge";
 import { deleteTaskData, getTasksData } from "../../API/tasks.services";
+import { convertToXLSX } from "../DownloadsExcel/ReportDownload";
 function convertToArabicDigits(number) {
   const digitsMap = {
     0: "٠",
@@ -84,6 +86,8 @@ export default function Comments() {
   const [department, setDepartment] = useState([]);
   const [editable, setEditable] = useState(null);
   const [soliders, setSoliders] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const [filter, setFilter] = useState({
     name: "",
     solderrkm: "",
@@ -97,13 +101,14 @@ export default function Comments() {
 
   const onClickDelete = (id) => {
     Swal.fire({
-      title: "هل انت متاكد ؟",
-      text: "سيتم حذف بيانات العسكري",
-      icon: "warning",
-      showCancelButton: false,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      title: "تم الحذف!",
+      text: "سيتم حذف   بيانات العسكري",
+      icon: "question",
+      iconHtml: "؟",
       confirmButtonText: "نعم",
+      cancelButtonText: "لا",
+      showCancelButton: true,
+      showCloseButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
@@ -156,24 +161,75 @@ export default function Comments() {
     const solidertsreehMatch = String(item.solidertsreeh).includes(
       filter.solidertsreeh
     );
-   if(filter.solidertsreeh){
-    return (
-      nameMatch &&
-      solderrkmMatch &&
-      soliderSSnMatch &&
-      soliderDepartmentMatch &&
-      solidertsreehMatch
-    );
-   }else{
-    return (
-      nameMatch &&
-      solderrkmMatch &&
-      soliderSSnMatch &&
-      soliderDepartmentMatch
-    );
-   }
+    if (filter.solidertsreeh) {
+      return (
+        nameMatch &&
+        solderrkmMatch &&
+        soliderSSnMatch &&
+        soliderDepartmentMatch &&
+        solidertsreehMatch
+      );
+    } else {
+      return (
+        nameMatch && solderrkmMatch && soliderSSnMatch && soliderDepartmentMatch
+      );
+    }
   });
 
+  const deletFilterDate = () => {
+    console.log("resultFromFilterData", filteredData);
+    Swal.fire({
+      title: "تم الحذف!",
+      text: "سيتم حذف  جميع بيانات العساكر",
+      icon: "question",
+      iconHtml: "؟",
+      confirmButtonText: "نعم",
+      cancelButtonText: "لا",
+      showCancelButton: true,
+      showCloseButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "تم الحذف!",
+          text: "سيتم حذف  جميع بيانات العساكر",
+          icon: "question",
+          iconHtml: "؟",
+          confirmButtonText: "نعم",
+          cancelButtonText: "لا",
+          showCancelButton: true,
+          showCloseButton: true,
+        });
+        setLoading(true);
+        filteredData?.map((item) => {
+          deleteTaskData("http://localhost:3001/tasks", item.id);
+        });
+        setLoading(false);
+
+        // deleteTaskData("http://localhost:3001/tasks", id);
+      }
+    });
+  };
+  const downloadReportAs = async (format) => {
+    debugger;
+    try {
+      // setIsAlertshow('show');
+      // setErrorDisplay(t('Report is preparing'));
+
+      convertToXLSX("Sales by customer", "xlsx");
+
+      // let file_name = t('Sales by customer report') + '.' + format;
+      let file_name = `${"Sales by customer report"}`;
+      const url = window.URL.createObjectURL(new Blob([filteredData]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", file_name);
+      document.body.appendChild(link);
+      link.click();
+      // setIsAlertshow(' ');
+    } catch (err) {
+      alert(err);
+    }
+  };
   return (
     <Box py={5} ml={{ sm: 0, md: "240px" }}>
       {editable ? (
@@ -237,96 +293,139 @@ export default function Comments() {
               />
             </FormControl>
           </HStack>
-          {filteredData.length !== 0 ? (
-            <TableContainer p={3}>
-              <Table variant="striped">
-                <Thead>
-                  <Tr>
-                    <Th>رقم</Th>
-                    <Th>اسم العسكري</Th>
-                    <Th>رقم العسكري</Th>
-                    <Th>رقم القومي</Th>
-                    <Th>رقم التليفون</Th>
-                    <Th>المؤهل</Th>
-                    <Th>القوة الاساسية</Th>
-                    <Th>تاريخ التجنيد</Th>
-                    <Th>تاريخ الانضمام</Th>
-                    <Th>تاريخ التسريح</Th>
-                    <Th>المحافظة</Th>
-                    <Th>المدينة/القرية</Th>
-                    <Th>العنوان الداخلي</Th>
-                    <Th>القسم التابع له</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {filteredData?.map((item, index) => (
-                    <Tr key={item.id}>
-                      <Td>{index + 1}</Td>
-                      <Td>{convertToArabicDigits(item.solidername)}</Td>
-                      <Td>{convertToArabicDigits(item.soliderrkm)}</Td>
-                      <Td>{convertToArabicDigits(item.soliderSSn)}</Td>
-                      <Td>{convertToArabicDigits(item.phonenumber)}</Td>
-                      <Td>
-                        {
-                          qualifications.filter(
-                            (qual) => qual.id === parseInt(item.qualification)
-                          )[0]?.name
-                        }
-                      </Td>
-                      <Td>
-                        {
-                          home.filter((qual) => qual.id === item.soliderhome)[0]
-                            ?.departmentName
-                        }
-                      </Td>
-                      <Td>{convertToArabicNumerals(item.solidertagneed)}</Td>
-                      <Td>{convertToArabicNumerals(item.soliderendmam)}</Td>
-                      <Td>{convertToArabicNumerals(item.solidertsreeh)}</Td>
-                      <Td>
-                        {
-                          governorates.filter(
-                            (qual) =>
-                              parseInt(qual.id) ===
-                              parseInt(item.selectedGovernorate)
-                          )[0]?.governorate_name_ar
-                        }
-                      </Td>
-                      <Td>{item.selectedCity}</Td>
-                      <Td>{item.address}</Td>
-                      <Td>
-                        {
-                          department.filter(
-                            (qual) => qual.id === item.department
-                          )[0]?.departmentName
-                        }
-                      </Td>
-                      <Td>
-                        <Button
-                          onClick={() => onClickEdit(item)}
-                          colorScheme="facebook"
-                          m={2}
-                        >
-                          <EditIcon />
-                        </Button>
-                        <Button
-                          onClick={() => onClickDelete(item.id)}
-                          bg="whitesmoke"
-                          color="facebook.500"
-                        >
-                          <DeleteIcon />
-                        </Button>
-                      </Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </TableContainer>
+          <Box mt={{ sm: 0, md: "10px" }}>
+            <Stack direction="row" spacing={4} className="mt-5">
+              {(filter.name ||
+                filter.solderrkm ||
+                filter.soliderSSn ||
+                filter.department ||
+                filter.solidertsreeh) && (
+                <Button
+                  leftIcon={<DeleteIcon />}
+                  colorScheme="pink"
+                  variant="solid"
+                  onClick={deletFilterDate}
+                  isDisabled={!filteredData.length > 0}
+                >
+                  حذف كل العساكر
+                </Button>
+              )}
+              <Button onClick={() => downloadReportAs("xlsx")}>
+                Download Excel
+              </Button>
+            </Stack>
+          </Box>
+          {loading ? (
+            <>loading....</>
           ) : (
-            <Center>
-              <Heading fontSize={"4xl"} my-5>
-                لا يوجد عساكر
-              </Heading>{" "}
-            </Center>
+            <>
+              {filteredData.length !== 0 ? (
+                <main className="mainconts">
+                  <div className="text-center mt-4 mb-5 content-report" style={{display:"none"}}>
+                    <p className="mb-2">القوات الجوية</p>
+                    <h4>المستشفي الجوي التخصصي</h4>
+                    <p style={{ fontSize: "0.799rem" }}>1/1/2024</p>
+                  </div>
+                  <TableContainer p={3}>
+                    <Table variant="striped">
+                      <Thead>
+                        <Tr>
+                          <Th>رقم</Th>
+                          <Th>اسم العسكري</Th>
+                          <Th>رقم العسكري</Th>
+                          <Th>رقم القومي</Th>
+                          <Th>رقم التليفون</Th>
+                          <Th>المؤهل</Th>
+                          <Th>القوة الاساسية</Th>
+                          <Th>تاريخ التجنيد</Th>
+                          <Th>تاريخ الانضمام</Th>
+                          <Th>تاريخ التسريح</Th>
+                          <Th>المحافظة</Th>
+                          <Th>المدينة/القرية</Th>
+                          <Th>العنوان الداخلي</Th>
+                          <Th>القسم التابع له</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {filteredData?.map((item, index) => (
+                          <Tr key={item.id}>
+                            <Td>{index + 1}</Td>
+                            <Td>{convertToArabicDigits(item.solidername)}</Td>
+                            <Td>{convertToArabicDigits(item.soliderrkm)}</Td>
+                            <Td>{convertToArabicDigits(item.soliderSSn)}</Td>
+                            <Td>{convertToArabicDigits(item.phonenumber)}</Td>
+                            <Td>
+                              {
+                                qualifications.filter(
+                                  (qual) =>
+                                    qual.id === parseInt(item.qualification)
+                                )[0]?.name
+                              }
+                            </Td>
+                            <Td>
+                              {
+                                home.filter(
+                                  (qual) => qual.id === item.soliderhome
+                                )[0]?.departmentName
+                              }
+                            </Td>
+                            <Td>
+                              {convertToArabicNumerals(item.solidertagneed)}
+                            </Td>
+                            <Td>
+                              {convertToArabicNumerals(item.soliderendmam)}
+                            </Td>
+                            <Td>
+                              {convertToArabicNumerals(item.solidertsreeh)}
+                            </Td>
+                            <Td>
+                              {
+                                governorates.filter(
+                                  (qual) =>
+                                    parseInt(qual.id) ===
+                                    parseInt(item.selectedGovernorate)
+                                )[0]?.governorate_name_ar
+                              }
+                            </Td>
+                            <Td>{item.selectedCity}</Td>
+                            <Td>{item.address}</Td>
+                            <Td>
+                              {
+                                department.filter(
+                                  (qual) => qual.id === item.department
+                                )[0]?.departmentName
+                              }
+                            </Td>
+                            <Td>
+                              <Button
+                                onClick={() => onClickEdit(item)}
+                                colorScheme="facebook"
+                                m={2}
+                              >
+                                <EditIcon />
+                              </Button>
+                              <Button
+                                onClick={() => onClickDelete(item.id)}
+                                bg="whitesmoke"
+                                color="facebook.500"
+                              >
+                                <DeleteIcon />
+                              </Button>
+                            </Td>
+                          </Tr>
+                        ))}
+                      </Tbody>
+                    </Table>
+                  </TableContainer>
+                </main>
+              ) : (
+                <Center>
+                  <Heading fontSize={"4xl"} my-5>
+                    لا يوجد عساكر
+                  </Heading>{" "}
+                </Center>
+              )}
+            </>
           )}
         </Box>
       )}
