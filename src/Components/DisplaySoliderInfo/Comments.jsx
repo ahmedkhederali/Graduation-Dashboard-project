@@ -217,19 +217,15 @@ export default function Comments() {
 
       convertToXLSX("Sales by customer", "xlsx");
 
-      // let file_name = t('Sales by customer report') + '.' + format;
-      let file_name = `${"Sales by customer report"}`;
-      const url = window.URL.createObjectURL(new Blob([filteredData]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", file_name);
-      document.body.appendChild(link);
-      link.click();
-      // setIsAlertshow(' ');
+     
     } catch (err) {
       alert(err);
     }
   };
+  const currentDate = new Date();
+const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+console.log(formattedDate); // Output: 1/1/2024 (for example)
+
   return (
     <Box py={5} ml={{ sm: 0, md: "240px" }}>
       {editable ? (
@@ -321,11 +317,11 @@ export default function Comments() {
             <>
               {filteredData.length !== 0 ? (
                 <main className="mainconts">
-                  <div className="text-center mt-4 mb-5 content-report" style={{display:"none"}}>
+                  {/* <div className="text-center mt-4 mb-5 content-report" style={{display:"none"}}>
                     <p className="mb-2">القوات الجوية</p>
                     <h4>المستشفي الجوي التخصصي</h4>
-                    <p style={{ fontSize: "0.799rem" }}>1/1/2024</p>
-                  </div>
+                    <p style={{ fontSize: "0.799rem" }}>{formattedDate}</p>
+                  </div> */}
                   <TableContainer p={3}>
                     <Table variant="striped">
                       <Thead>
