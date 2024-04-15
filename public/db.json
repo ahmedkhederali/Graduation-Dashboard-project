@@ -1,84 +1,15 @@
 {
   "tasks": [
-    {
-      "id": "1531",
-      "solidername": "محمود",
-      "phonenumber": "01015036158",
-      "qualification": "3",
-      "soliderrkm": "2991101414457",
-      "soliderSSn": "2991101414457",
-      "soliderhome": "5b93",
-      "solidertagneed": "2024-04-24",
-      "soliderendmam": "2024-04-26",
-      "solidertsreeh": "2024-04-26",
-      "department": "63ce",
-      "selectedGovernorate": "14",
-      "selectedCity": "السويس",
-      "iskowa": true,
-      "address": "بنها",
-      "slah": "d4b6",
-      "tkhsos": "ققق",
-      "mohalmdni": "بكاليورس زراعة",
-      "molahzat": "يييلب"
-    },
-    {
-      "id": "bc7d",
-      "solidername": "احمد ",
-      "phonenumber": "01018036153",
-      "qualification": "2",
-      "soliderrkm": "534534534",
-      "soliderSSn": "534534543",
-      "soliderhome": "5b93",
-      "solidertagneed": "2024-04-25",
-      "soliderendmam": "2024-04-18",
-      "solidertsreeh": "2024-05-11",
-      "department": "63ce",
-      "selectedGovernorate": "20",
-      "selectedCity": "كفر صقر",
-      "iskowa": true,
-      "mohalmdni": "يكاليورس ",
-      "molahzat": "ييبيبيبي",
-      "slah": "d4b6",
-      "tkhsos": "يبريرؤرؤرؤرؤ",
-      "address": "egypt"
-    }
+   
   ],
   "saf": [
-    {
-      "id": "8038",
-      "solidername": "محمد الشافعي الشبراوي",
-      "phonenumber": "01021125412",
-      "qualification": "2",
-      "soliderrkm": "3234234234",
-      "soliderSSn": "3423423423",
-      "soliderhome": "a2f4",
-      "solidertagneed": "2024-04-25",
-      "soliderendmam": "2024-05-09",
-      "degree": "3",
-      "department": "63ce",
-      "selectedGovernorate": "17",
-      "selectedCity": "ببا",
-      "iskowa": true,
-      "solidertaraki": "2024-05-10",
-      "molahzat": "بيلبيلبي",
-      "slah": "d4b6",
-      "tkhsos": "بلبلبل",
-      "address": "بلبيلبي"
-    }
+   
   ],
   "department": [
-    {
-      "id": "63ce",
-      "departmentName": "بللالا",
-      "department_present": ""
-    }
+   
   ],
   "home": [
-    {
-      "id": "17e4",
-      "HomeSoliderName": "",
-      "departmentName": "كتيبة 700 نقل مختلط"
-    }
+   
   ],
   "slah": [
     {
