@@ -46,23 +46,24 @@
   "saf": [
     {
       "id": "8038",
-      "solidername": "ddd",
-      "phonenumber": "dfds",
+      "solidername": "محمد الشافعي الشبراوي",
+      "phonenumber": "01021125412",
       "qualification": "2",
-      "soliderrkm": "",
-      "soliderSSn": "",
+      "soliderrkm": "3234234234",
+      "soliderSSn": "3423423423",
       "soliderhome": "a2f4",
-      "solidertagneed": "",
-      "soliderendmam": "",
-      "degree": "1",
-      "department": "",
-      "selectedGovernorate": "",
-      "selectedCity": "",
-      "iskowa": false,
-      "solidertatwa": "",
-      "molahzat": "",
+      "solidertagneed": "2024-04-25",
+      "soliderendmam": "2024-05-09",
+      "degree": "3",
+      "department": "63ce",
+      "selectedGovernorate": "17",
+      "selectedCity": "ببا",
+      "iskowa": true,
+      "solidertaraki": "2024-05-10",
+      "molahzat": "بيلبيلبي",
       "slah": "d4b6",
-      "tkhsos": ""
+      "tkhsos": "بلبلبل",
+      "address": "بلبيلبي"
     }
   ],
   "department": [
@@ -74,14 +75,9 @@
   ],
   "home": [
     {
-      "id": "5b93",
+      "id": "17e4",
       "HomeSoliderName": "",
-      "departmentName": "ءءء"
-    },
-    {
-      "id": "a2f4",
-      "HomeSoliderName": "",
-      "departmentName": "اتاات"
+      "departmentName": "كتيبة 700 نقل مختلط"
     }
   ],
   "slah": [
@@ -89,6 +85,11 @@
       "id": "d4b6",
       "HomeSoliderName": "",
       "departmentName": "قوات جوية"
+    },
+    {
+      "id": "b408",
+      "HomeSoliderName": "",
+      "departmentName": "خدمات طبية"
     }
   ]
 }

@@ -46,7 +46,7 @@ export default function UserChallenge({ mar, data }) {
     selectedGovernorate: "",
     selectedCity: "",
     iskowa: false,
-    solidertatwa:'',
+    solidertaraki:'',
     molahzat:"",
     slah:'',
     tkhsos:''
@@ -254,9 +254,9 @@ export default function UserChallenge({ mar, data }) {
               placeholder="Select Date and Time"
               size="md"
               type="date"
-              name="solidertatwa"
+              name="solidertaraki"
               onChange={handleFieldChange}
-              value={formData.solidertatwa}
+              value={formData.solidertaraki}
             />
           </FormControl>
           <FormControl id="Brief">
