@@ -29,6 +29,8 @@ export default function AddChanllenge({ mar, data }) {
   const navigate = useNavigate();
   const [home, setHome] = useState([]);
   const [department, setDepartment] = useState([]);
+  const [slahs, setSlahs] = useState([]);
+
 
   const [formData, setFormData] = useState({
     solidername: "",
@@ -44,6 +46,10 @@ export default function AddChanllenge({ mar, data }) {
     selectedGovernorate: "",
     selectedCity: "",
     iskowa: false,
+    mohalmdni:'',
+    molahzat:"",
+    slah:'',
+    tkhsos:''
   });
 
   const handleFieldChange = (e) => {
@@ -90,6 +96,16 @@ export default function AddChanllenge({ mar, data }) {
       });
   }, []);
   React.useEffect(() => {
+    fetch("http://localhost:3001/slah")
+      .then((response) => response.json())
+      .then((data) => {
+        setSlahs(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+  React.useEffect(() => {
     fetch("http://localhost:3001/department")
       .then((response) => response.json())
       .then((data) => {
@@ -105,6 +121,7 @@ export default function AddChanllenge({ mar, data }) {
       setFormData(data);
     }
   }, [data]);
+  console.log("slahs",slahs)
   return (
     <Box
       ml={mar ? { sm: 0, md: "50px" } : { sm: 0, md: "250px" }}
@@ -119,7 +136,7 @@ export default function AddChanllenge({ mar, data }) {
       // m={10}
     >
       <Heading mb={10} fontSize={"2xl"} textAlign={"center"}>
-        {data ? "تعديل معلومات العسكري" : "اضافة معلومات العسكري"}
+        {data ? " السجل الاساسي للمجندين" : "السجل الاساسي للمجندين"}
       </Heading>
       <Stack spacing={4}>
         <HStack>
@@ -145,10 +162,21 @@ export default function AddChanllenge({ mar, data }) {
               value={formData.phonenumber}
             />
           </FormControl>
+          <FormControl id="Add Chanllenge">
+            <FormLabel>المؤهل المدني </FormLabel>
+            <Input
+              w={"100%"}
+              type="text"
+              name="mohalmdni"
+              onChange={handleFieldChange}
+              autoComplete="off"
+              value={formData.mohalmdni}
+            />
+          </FormControl>
           <FormControl id="Brief">
-            <FormLabel> المؤهل</FormLabel>
+            <FormLabel> المستوي الثقافي</FormLabel>
             <Select
-              placeholder="اختر المؤهل"
+              placeholder="اختر المستوي الثقافي"
               value={formData.qualification}
               name="qualification"
               onChange={handleFieldChange}
@@ -203,6 +231,21 @@ export default function AddChanllenge({ mar, data }) {
               ))}
             </Select>
           </FormControl>
+          <FormControl id="Add Chanllenge">
+          <FormLabel> السلاح  </FormLabel>
+          <Select
+            placeholder="اختر السلاح"
+            name="slah"
+            value={formData.slah}
+            onChange={handleFieldChange}
+          >
+            {slahs.map((dep) => (
+              <option key={dep.id} value={dep.id}>
+                {dep.departmentName}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
         </HStack>
       </Stack>
 
@@ -312,7 +355,28 @@ export default function AddChanllenge({ mar, data }) {
             ))}
           </Select>
         </FormControl>
-        <FormControl display="flex" alignItems="center"></FormControl>
+        <FormControl id="Add Chanllenge">
+            <FormLabel>الملاحظات</FormLabel>
+            <Input
+              w={"100%"}
+              type="text"
+              name="molahzat"
+              onChange={handleFieldChange}
+              autoComplete="off"
+              value={formData.molahzat}
+            />
+          </FormControl>
+          <FormControl id="Add Chanllenge">
+            <FormLabel>التخصص</FormLabel>
+            <Input
+              w={"100%"}
+              type="text"
+              name="tkhsos"
+              onChange={handleFieldChange}
+              autoComplete="off"
+              value={formData.tkhsos}
+            />
+          </FormControl>
         <FormControl display="flex" alignItems="center">
           <FormLabel htmlFor="email-alerts" mb="0">
             قوه ؟

@@ -30,6 +30,7 @@ export default function UserChallenge({ mar, data }) {
   const navigate = useNavigate();
   const [home, setHome] = useState([]);
   const [department, setDepartment] = useState([]);
+  const [slahs, setSlahs] = useState([]);
 
   const [formData, setFormData] = useState({
     solidername: "",
@@ -45,6 +46,10 @@ export default function UserChallenge({ mar, data }) {
     selectedGovernorate: "",
     selectedCity: "",
     iskowa: false,
+    solidertatwa:'',
+    molahzat:"",
+    slah:'',
+    tkhsos:''
   });
 
   const handleFieldChange = (e) => {
@@ -77,7 +82,16 @@ export default function UserChallenge({ mar, data }) {
       navigate("/evaluation");
     }
   };
-
+  React.useEffect(() => {
+    fetch("http://localhost:3001/slah")
+      .then((response) => response.json())
+      .then((data) => {
+        setSlahs(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
   React.useEffect(() => {
     fetch("http://localhost:3001/home")
       .then((response) => response.json())
@@ -118,7 +132,7 @@ export default function UserChallenge({ mar, data }) {
       // m={10}
     >
       <Heading mb={10} fontSize={"2xl"} textAlign={"center"}>
-        {data ? "تعديل معلومات الصف" : "اضافة معلومات الصف"}
+        {data ? " السجل الاساسي للراتب العالي" : "السجل الاساسي للراتب العالي"}
       </Heading>
       <Stack spacing={4}>
         <HStack>
@@ -145,9 +159,9 @@ export default function UserChallenge({ mar, data }) {
             />
           </FormControl>
           <FormControl id="Brief">
-            <FormLabel> المؤهل</FormLabel>
+            <FormLabel> المستوي الثقافي</FormLabel>
             <Select
-              placeholder="اختر المؤهل"
+              placeholder="المستوي الثقافي"
               value={formData.qualification}
               name="qualification"
               onChange={handleFieldChange}
@@ -201,13 +215,28 @@ export default function UserChallenge({ mar, data }) {
               ))}
             </Select>
           </FormControl>
+          <FormControl id="Add Chanllenge">
+          <FormLabel> السلاح  </FormLabel>
+          <Select
+            placeholder="اختر السلاح"
+            name="slah"
+            value={formData.slah}
+            onChange={handleFieldChange}
+          >
+            {slahs.map((dep) => (
+              <option key={dep.id} value={dep.id}>
+                {dep.departmentName}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
         </HStack>
       </Stack>
 
       <Stack spacing={4} pt={5}>
         <HStack>
           <FormControl id="Brief">
-            <FormLabel> تاريخ التجنيد</FormLabel>
+            <FormLabel> تاريخ التطوع</FormLabel>
 
             <Input
               placeholder="Select Date and Time"
@@ -216,6 +245,18 @@ export default function UserChallenge({ mar, data }) {
               name="solidertagneed"
               onChange={handleFieldChange}
               value={formData.solidertagneed}
+            />
+          </FormControl>
+          <FormControl id="Brief">
+            <FormLabel> تاريخ الترقي</FormLabel>
+
+            <Input
+              placeholder="Select Date and Time"
+              size="md"
+              type="date"
+              name="solidertatwa"
+              onChange={handleFieldChange}
+              value={formData.solidertatwa}
             />
           </FormControl>
           <FormControl id="Brief">
@@ -315,8 +356,28 @@ export default function UserChallenge({ mar, data }) {
             ))}
           </Select>
         </FormControl>
-        <FormControl display="flex" alignItems="center"></FormControl>
-
+        <FormControl id="Add Chanllenge">
+            <FormLabel>الملاحظات</FormLabel>
+            <Input
+              w={"100%"}
+              type="text"
+              name="molahzat"
+              onChange={handleFieldChange}
+              autoComplete="off"
+              value={formData.molahzat}
+            />
+          </FormControl>
+          <FormControl id="Add Chanllenge">
+            <FormLabel>التخصص</FormLabel>
+            <Input
+              w={"100%"}
+              type="text"
+              name="tkhsos"
+              onChange={handleFieldChange}
+              autoComplete="off"
+              value={formData.tkhsos}
+            />
+          </FormControl>
         <FormControl display="flex" alignItems="center">
           <FormLabel htmlFor="email-alerts" mb="0">
             قوه ؟

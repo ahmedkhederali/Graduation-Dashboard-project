@@ -22,7 +22,6 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
 import {
-  dataloop,
   departments,
   governorates,
   qualifications,
@@ -112,12 +111,13 @@ const isHomeofSolder = [
     soliderSSn: "",
     department: "",
     solidertsreeh: "",
-    iskowa:""
+    iskowa:"",
+    qualification:''
   });
   const onClickEdit = (item) => {
     setEditable(item);
   };
-
+console.log("filter",filter)
   const onClickDelete = (id) => {
     Swal.fire({
       title: "تم الحذف!",
@@ -185,6 +185,9 @@ const isHomeofSolder = [
     // Check if iskowa matches the filter value
 
     const iskowaMatch = String(item.iskowa).includes(filter.iskowa);
+    const isQualification = String(item.qualification).includes(filter.qualification);
+
+
 
     if (filter.solidertsreeh) {
       return (
@@ -193,11 +196,11 @@ const isHomeofSolder = [
         soliderSSnMatch &&
         soliderDepartmentMatch &&
         solidertsreehMatch && 
-        iskowaMatch
+        iskowaMatch && isQualification
       );
     } else {
       return (
-        nameMatch && solderrkmMatch && soliderSSnMatch && soliderDepartmentMatch && iskowaMatch
+        nameMatch && solderrkmMatch && soliderSSnMatch && soliderDepartmentMatch && iskowaMatch && isQualification
       );
     }
   });
@@ -250,6 +253,23 @@ console.log("filteredData",filteredData)
     currentDate.getMonth() + 1
   }/${currentDate.getFullYear()}`;
   console.log(formattedDate); // Output: 1/1/2024 (for example)
+  console.log("filteredData",filteredData)
+  function convertToArabicNumeral(englishNum) {
+    debugger
+    const arabicNumerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    let arabicNumeral = '';
+    for (let i = 0; i < englishNum.length; i++) {
+        if (!isNaN(englishNum[i])) {
+            arabicNumeral += arabicNumerals[parseInt(englishNum[i])];
+        } else {
+            arabicNumeral += englishNum[i];
+        }
+    }
+    return arabicNumeral;
+}
+
+
+
 
   return (
     <Box py={5} ml={{ sm: 0, md: "240px" }}>
@@ -316,6 +336,22 @@ console.log("filteredData",filteredData)
                   </option>
                 ))}
               </Select>
+            </FormControl> 
+            <FormControl id="Add Chanllenge">
+              <Select
+                placeholder="المستوي الثقافي"
+                name="mostwaSakafi"
+                value={filter.qualification}
+                onChange={(e) =>
+                  setFilter({ ...filter, qualification: e.target.value })
+                }
+              >
+                {qualifications.map((dep) => (
+                  <option key={dep.id} value={dep.id}>
+                    {dep.name}
+                  </option>
+                ))}
+              </Select>
             </FormControl>
             <FormControl>
               <Input
@@ -360,6 +396,7 @@ console.log("filteredData",filteredData)
               )}
             </Stack>
           </Box>
+          <Heading  >عدد ({filteredData&& convertToArabicNumeral(String(filteredData.length))}) </Heading>
           {loading ? (
             <>loading....</>
           ) : (
@@ -370,13 +407,13 @@ console.log("filteredData",filteredData)
                     <Table variant="striped">
                       <Thead>
                         <Tr>
-                          <Th>رقم</Th>
-                          <Th>اسم العسكري</Th>
+                          <Th>م</Th>
                           <Th>رقم العسكري</Th>
-                          <Th>رقم القومي</Th>
-                          <Th>رقم التليفون</Th>
-                          <Th>المؤهل</Th>
-                          <Th>القوة الاساسية</Th>
+                          <Th> درجة</Th>
+                          <Th>اسم الجندي</Th>
+                          <Th> التخصص </Th>
+                          <Th>المؤهل المدني</Th>
+                          <Th>المستوي الثقافي</Th>
                           <Th>تاريخ التجنيد</Th>
                           <Th>تاريخ الانضمام</Th>
                           <Th>تاريخ التسريح</Th>
@@ -384,30 +421,30 @@ console.log("filteredData",filteredData)
                           <Th>المدينة/القرية</Th>
                           <Th>العنوان الداخلي</Th>
                           <Th>القسم التابع له</Th>
+                          <Th>رقم القومي</Th>
+                          <Th>رقم التليفون</Th>
+                          <Th>القوة الاساسية</Th>
                           <Th> قوة / ملحق </Th>
+                          <Th> ملاحظات </Th>
+
                         </Tr>
                       </Thead>
                       <Tbody>
                         {filteredData?.map((item, index) => (
                           <Tr key={item.id}>
                             <Td>{index + 1}</Td>
-                            <Td>{convertToArabicDigits(item.solidername)}</Td>
                             <Td>{convertToArabicDigits(item.soliderrkm)}</Td>
-                            <Td>{convertToArabicDigits(item.soliderSSn)}</Td>
-                            <Td>{convertToArabicDigits(item.phonenumber)}</Td>
+                            <Td>{"جندي"}</Td>
+                            <Td>{convertToArabicDigits(item.solidername)}</Td>
+                            <Td>{(item.tkhsos)}</Td>
+                            <Td>{(item.mohalmdni)}</Td>
+
                             <Td>
                               {
                                 qualifications.filter(
                                   (qual) =>
                                     qual.id === parseInt(item.qualification)
                                 )[0]?.name
-                              }
-                            </Td>
-                            <Td>
-                              {
-                                home.filter(
-                                  (qual) => qual.id === item.soliderhome
-                                )[0]?.departmentName
                               }
                             </Td>
                             <Td>
@@ -437,11 +474,28 @@ console.log("filteredData",filteredData)
                                 )[0]?.departmentName
                               }
                             </Td>
+                            <Td>{convertToArabicDigits(item.soliderSSn)}</Td>
+                            <Td>{convertToArabicDigits(item.phonenumber)}</Td>
+                            <Td>
+                              {
+                                home.filter(
+                                  (qual) => qual.id === item.soliderhome
+                                )[0]?.departmentName
+                              }
+                            </Td>
+                           
+                           
                             <Td>
                               {
                                 item.iskowa ? "قوة" : "ملحق"
                               }
                             </Td>
+                            <Td>
+                              {
+                                item.molahzat
+                              }
+                            </Td>
+
                             <Td>
                               <Button
                                 onClick={() => onClickEdit(item)}

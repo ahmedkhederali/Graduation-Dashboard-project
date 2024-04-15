@@ -163,14 +163,11 @@ const MobileNav = ({ onOpen,setAdmin, ...rest }) => {
       <Heading
           fontWeight={600}
           fontSize={{ base: '2xl', sm: '3xl', md: '5xl' }}
-          lineHeight={'110%'}  color={'red.900'}>
-          القوات  {' '}
-          <Text as={'span'} color={useColorModeValue("gray.800", "white")}>
-          المسلحة
-          </Text>
-          <Text as={'span'} color={'black'}>
-            المصرية
-          </Text>
+          lineHeight={'110%'}  color={'لامشؤن.900'}>
+            مكتب
+          تنظيم   
+          وادارة
+          
         </Heading>      <HStack spacing={{ base: "0", md: "6" }}>
         <Button onClick={toggleColorMode}>
           {colorMode === "light" ? <MoonIcon /> : <SunIcon />}

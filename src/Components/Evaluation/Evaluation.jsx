@@ -20,7 +20,6 @@ import {
 import Swal from "sweetalert2";
 
 import {
-  dataloopsf,
   degree,
   departments,
   governorates,
@@ -73,7 +72,9 @@ export default function Evaluation() {
     soliderSSn: "",
     department: "",
     degree: "",
-    iskowa:""
+    iskowa:"",
+    qualification:''
+
     });
   const filteredData = safData.filter((item) => {
     const nameMatch = item.solidername.includes(filter.name);
@@ -86,13 +87,15 @@ export default function Evaluation() {
  // Check if iskowa matches the filter value
 
  const iskowaMatch = String(item.iskowa).includes(filter.iskowa);
+ const isQualification = String(item.qualification).includes(filter.qualification);
+
     return (
       nameMatch &&
       solderrkmMatch &&
       soliderSSnMatch &&
       soliderDepartmentMatch &&
       soliderDegreetMatch &&
-      iskowaMatch
+      iskowaMatch && isQualification
     );
   });
   const onClickEdit = (item) => {
@@ -269,6 +272,22 @@ export default function Evaluation() {
                 {degree.map((deg) => (
                   <option key={deg.id} value={deg.id}>
                     {deg.name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl id="Add Chanllenge">
+              <Select
+                placeholder="المستوي الثقافي"
+                name="mostwaSakafi"
+                value={filter.qualification}
+                onChange={(e) =>
+                  setFilter({ ...filter, qualification: e.target.value })
+                }
+              >
+                {qualifications.map((dep) => (
+                  <option key={dep.id} value={dep.id}>
+                    {dep.name}
                   </option>
                 ))}
               </Select>
