@@ -6,9 +6,9 @@ import {
 import { DeleteIcon } from '@chakra-ui/icons'
 import Swal from 'sweetalert2'
 import { useNavigate } from "react-router-dom";
-import { deleteHomeData } from '../../API/home.services.js';
+import { deleteSlahData } from '../../API/slahs.services.js';
 
-export default function AllSoliderHome() {
+export default function AllSoliderSlah() {
   const navigate = useNavigate();
   const [filter, setFilter] = useState({
     name: "",
@@ -16,7 +16,7 @@ export default function AllSoliderHome() {
   const onClickDelete = (id) => {
     Swal.fire({
       title: "هل انت متاكد ؟",
-      text: "سيتم حذف بيانات القوة",
+      text: "سيتم حذف بيانات السلاح",
       icon: "warning",
       showCancelButton: false,
       confirmButtonColor: "#3085d6",
@@ -26,11 +26,11 @@ export default function AllSoliderHome() {
       if (result.isConfirmed) {
         Swal.fire({
           title: "تم الحذف!",
-          text: "تم حذف بيانات القوة.",
+          text: "تم حذف بيانات السلاح.",
           icon: "success"
         });
         // navigate("/add_problem")
-        deleteHomeData('http://localhost:3001/home',id);
+        deleteSlahData('http://localhost:3001/slah',id);
 
       }
     });
@@ -38,9 +38,10 @@ export default function AllSoliderHome() {
 
   const [department, setDepartment] = useState([]);
   useEffect(() => {
-    fetch('http://localhost:3001/home') 
+    fetch('http://localhost:3001/slah') 
       .then(response => response.json())
       .then(data => {
+        console.log("data",data)
         setDepartment(data);
       })
       .catch(error => {
@@ -71,7 +72,7 @@ export default function AllSoliderHome() {
         <Thead>
           <Tr>
             <Th>رقم</Th>
-            <Th>اسم القوة</Th>
+            <Th>اسم السلاح</Th>
           </Tr>
         </Thead>
         <Tbody>

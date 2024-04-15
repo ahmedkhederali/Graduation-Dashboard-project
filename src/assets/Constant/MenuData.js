@@ -9,91 +9,30 @@ import {
   FiChevronDown,
 } from "react-icons/fi";
 export const LinkItems = [
-  { name: "اضافة عساكر", icon: FiHome, dir: "/" },
+  { name: "اضافة جنود ", icon: FiHome, dir: "/" },
   { name: "اضافة صف ", icon: FiTrendingUp, dir: "/user_chanllenge" },
   { name: "اضافة اقسام", icon: FiCompass, dir: "/add_problem" },
   { name: "اضافة القوة", icon: FiCompass, dir: "/solider_home" },
-  { name: "عرض جميع العساكر", icon: FiStar, dir: "/comments" },
+  { name: "اضافة السلاح", icon: FiCompass, dir: "/solider_slah" },
+
+  { name: "عرض جميع الجنود ", icon: FiStar, dir: "/comments" },
   { name: "عرض جميع الصف", icon: FiSettings, dir: "/evaluation" },
   { name: "عرض جميع الاقسام", icon: FiSettings, dir: "/complaint" },
-  { name: "عرض جميع القوي", icon: FiSettings, dir: "/allSoliderHomes" },
+  { name: "عرض جميع القوة", icon: FiSettings, dir: "/allSoliderHomes" },
+  { name: "عرض جميع الاسلحة", icon: FiSettings, dir: "/allSoliderSlah" },
+
 
 ];
 
-export const dataloop=[
-  {
-    "solidername": "احمد علي رمضان خضر",
-    "phonenumber": "01018036153",
-    "qualification": "4",
-    "soliderrkm": "20231425141541",
-    "soliderSSn": "29911071700552",
-    "soliderhome": "2",
-    "solidertagneed": "2024-03-29",
-    "soliderendmam": "2024-03-29",
-    "solidertsreeh": "2024-03-29",
-    "department": "3",
-    "selectedGovernorate": "10",
-    "selectedCity": "سرس الليان",
-    "address": "شارع المحطة"
-},
 
-]
-export const dataloopsf=[
-  {
-    "solidername": "محمد الشافعي الشبراوي",
-    "phonenumber": "01018036153",
-    "qualification": "4",
-    "soliderrkm": "20231425141541",
-    "soliderSSn": "29911071700552",
-    "soliderhome": "2",
-    "solidertagneed": "2024-04-05",
-    "soliderendmam": "2024-04-06",
-    "degree": "1",
-    "department": "3",
-    "selectedGovernorate": "10",
-    "selectedCity": "سرس الليان",
-    "address": "شارع المحطة"
-},
 
-]
-export const accodringQuestionAndAnswer = [
-  {
-    question: "What is GO UI?",
-    answer:
-      "GO UI is a simple and modular component library that gives developers",
-  },
-  {
-    question: "What is GO UI?",
-    answer:
-      "GO UI is a simple and modular component library that gives developers",
-  },
-  {
-    question: "What is GO UI?",
-    answer:
-      "GO UI is a simple and modular component library that gives developers",
-  },
-  {
-    question: "What is GO UI?",
-    answer:
-      "GO UI is a simple and modular component library that gives developers",
-  },
-  {
-    question: "What is GO UI?",
-    answer:
-      "GO UI is a simple and modular component library that gives developers",
-  },
-  {
-    question: "What is GO UI?",
-    answer:
-      "GO UI is a simple and modular component library that gives developers",
-  },
-];
+
 
 export const qualifications=[
-  {id:1,name:"عادة"},
+  {id:1,name:"امي"},
   {id:2,name:"متوسطة"},
   {id:3,name:"فوق المتوسط"},
-  {id:4,name:"كلية"}
+  {id:4,name:"عليا"}
 ]
 
 export const degree=[

@@ -22,13 +22,17 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
 import {
-  dataloop,
   departments,
   governorates,
   qualifications,
   solideHome,
 } from "../../assets/Constant/MenuData";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import {
+  ArrowForwardIcon,
+  DeleteIcon,
+  DownloadIcon,
+  EditIcon,
+} from "@chakra-ui/icons";
 import AddChanllenge from "../Solider/AddChanllenge";
 import { deleteTaskData, getTasksData } from "../../API/tasks.services";
 import { convertToXLSX } from "../DownloadsExcel/ReportDownload";
@@ -64,7 +68,7 @@ function convertToArabicNumerals(dateString) {
     "١١",
     "١٢",
   ];
-  debugger;
+  ;
   const [year, month, day] = dateString.split("-");
 
   if (day && month && year) {
@@ -88,17 +92,32 @@ export default function Comments() {
   const [soliders, setSoliders] = useState([]);
   const [loading, setLoading] = useState(false);
 
+const isHomeofSolder = [
+  {
+    id:1,
+    name:"قوة",
+    value:true
+  },
+  {
+    id:2,
+    name:"ملحق",
+    value:false
+  }
+]
+
   const [filter, setFilter] = useState({
     name: "",
     solderrkm: "",
     soliderSSn: "",
     department: "",
     solidertsreeh: "",
+    iskowa:"",
+    qualification:''
   });
   const onClickEdit = (item) => {
     setEditable(item);
   };
-
+console.log("filter",filter)
   const onClickDelete = (id) => {
     Swal.fire({
       title: "تم الحذف!",
@@ -152,7 +171,9 @@ export default function Comments() {
       });
   }, []);
   const filteredData = soliders.filter((item) => {
+    
     const nameMatch = item.solidername.includes(filter.name);
+    // const kowaMatch = item.iskowa.includes(filter.name);
     const solderrkmMatch = String(item.soliderrkm).includes(filter.solderrkm);
     const soliderSSnMatch = String(item.soliderSSn).includes(filter.soliderSSn);
     const soliderDepartmentMatch = String(item.department).includes(
@@ -161,21 +182,29 @@ export default function Comments() {
     const solidertsreehMatch = String(item.solidertsreeh).includes(
       filter.solidertsreeh
     );
+    // Check if iskowa matches the filter value
+
+    const iskowaMatch = String(item.iskowa).includes(filter.iskowa);
+    const isQualification = String(item.qualification).includes(filter.qualification);
+
+
+
     if (filter.solidertsreeh) {
       return (
         nameMatch &&
         solderrkmMatch &&
         soliderSSnMatch &&
         soliderDepartmentMatch &&
-        solidertsreehMatch
+        solidertsreehMatch && 
+        iskowaMatch && isQualification
       );
     } else {
       return (
-        nameMatch && solderrkmMatch && soliderSSnMatch && soliderDepartmentMatch
+        nameMatch && solderrkmMatch && soliderSSnMatch && soliderDepartmentMatch && iskowaMatch && isQualification
       );
     }
   });
-
+console.log("filteredData",filteredData)
   const deletFilterDate = () => {
     console.log("resultFromFilterData", filteredData);
     Swal.fire({
@@ -210,21 +239,37 @@ export default function Comments() {
     });
   };
   const downloadReportAs = async (format) => {
-    debugger;
     try {
       // setIsAlertshow('show');
       // setErrorDisplay(t('Report is preparing'));
 
-      convertToXLSX("Sales by customer", "xlsx");
-
-     
+      convertToXLSX("كشف بجميع العساكر", "xlsx");
     } catch (err) {
       alert(err);
     }
   };
   const currentDate = new Date();
-const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
-console.log(formattedDate); // Output: 1/1/2024 (for example)
+  const formattedDate = `${currentDate.getDate()}/${
+    currentDate.getMonth() + 1
+  }/${currentDate.getFullYear()}`;
+  console.log(formattedDate); // Output: 1/1/2024 (for example)
+  console.log("filteredData",filteredData)
+  function convertToArabicNumeral(englishNum) {
+    debugger
+    const arabicNumerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    let arabicNumeral = '';
+    for (let i = 0; i < englishNum.length; i++) {
+        if (!isNaN(englishNum[i])) {
+            arabicNumeral += arabicNumerals[parseInt(englishNum[i])];
+        } else {
+            arabicNumeral += englishNum[i];
+        }
+    }
+    return arabicNumeral;
+}
+
+
+
 
   return (
     <Box py={5} ml={{ sm: 0, md: "240px" }}>
@@ -276,6 +321,38 @@ console.log(formattedDate); // Output: 1/1/2024 (for example)
                 ))}
               </Select>
             </FormControl>
+            <FormControl id="Add Chanllenge">
+              <Select
+                placeholder="قوه / ملحق"
+                name="iskowa"
+                value={filter.iskowa}
+                onChange={(e) =>
+                  setFilter({ ...filter, iskowa: e.target.value })
+                }
+              >
+                {isHomeofSolder.map((dep) => (
+                  <option key={dep.id} value={dep.value}>
+                    {dep.name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl> 
+            <FormControl id="Add Chanllenge">
+              <Select
+                placeholder="المستوي الثقافي"
+                name="mostwaSakafi"
+                value={filter.qualification}
+                onChange={(e) =>
+                  setFilter({ ...filter, qualification: e.target.value })
+                }
+              >
+                {qualifications.map((dep) => (
+                  <option key={dep.id} value={dep.id}>
+                    {dep.name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
             <FormControl>
               <Input
                 placeholder="Select Date and Time"
@@ -306,33 +383,37 @@ console.log(formattedDate); // Output: 1/1/2024 (for example)
                   حذف كل العساكر
                 </Button>
               )}
-              <Button onClick={() => downloadReportAs("xlsx")}>
-                Download Excel
-              </Button>
+
+              {filteredData.length > 0 && (
+                <Button
+                  onClick={() => downloadReportAs("xlsx")}
+                  rightIcon={<DownloadIcon />}
+                  colorScheme="teal"
+                  variant="outline"
+                >
+                  تنزيل اكسيل
+                </Button>
+              )}
             </Stack>
           </Box>
+          <Heading  >عدد ({filteredData&& convertToArabicNumeral(String(filteredData.length))}) </Heading>
           {loading ? (
             <>loading....</>
           ) : (
             <>
               {filteredData.length !== 0 ? (
                 <main className="mainconts">
-                  {/* <div className="text-center mt-4 mb-5 content-report" style={{display:"none"}}>
-                    <p className="mb-2">القوات الجوية</p>
-                    <h4>المستشفي الجوي التخصصي</h4>
-                    <p style={{ fontSize: "0.799rem" }}>{formattedDate}</p>
-                  </div> */}
                   <TableContainer p={3}>
                     <Table variant="striped">
                       <Thead>
                         <Tr>
-                          <Th>رقم</Th>
-                          <Th>اسم العسكري</Th>
+                          <Th>م</Th>
                           <Th>رقم العسكري</Th>
-                          <Th>رقم القومي</Th>
-                          <Th>رقم التليفون</Th>
-                          <Th>المؤهل</Th>
-                          <Th>القوة الاساسية</Th>
+                          <Th> درجة</Th>
+                          <Th>اسم الجندي</Th>
+                          <Th> التخصص </Th>
+                          <Th>المؤهل المدني</Th>
+                          <Th>المستوي الثقافي</Th>
                           <Th>تاريخ التجنيد</Th>
                           <Th>تاريخ الانضمام</Th>
                           <Th>تاريخ التسريح</Th>
@@ -340,29 +421,30 @@ console.log(formattedDate); // Output: 1/1/2024 (for example)
                           <Th>المدينة/القرية</Th>
                           <Th>العنوان الداخلي</Th>
                           <Th>القسم التابع له</Th>
+                          <Th>رقم القومي</Th>
+                          <Th>رقم التليفون</Th>
+                          <Th>القوة الاساسية</Th>
+                          <Th> قوة / ملحق </Th>
+                          <Th> ملاحظات </Th>
+
                         </Tr>
                       </Thead>
                       <Tbody>
                         {filteredData?.map((item, index) => (
                           <Tr key={item.id}>
                             <Td>{index + 1}</Td>
-                            <Td>{convertToArabicDigits(item.solidername)}</Td>
                             <Td>{convertToArabicDigits(item.soliderrkm)}</Td>
-                            <Td>{convertToArabicDigits(item.soliderSSn)}</Td>
-                            <Td>{convertToArabicDigits(item.phonenumber)}</Td>
+                            <Td>{"جندي"}</Td>
+                            <Td>{convertToArabicDigits(item.solidername)}</Td>
+                            <Td>{(item.tkhsos)}</Td>
+                            <Td>{(item.mohalmdni)}</Td>
+
                             <Td>
                               {
                                 qualifications.filter(
                                   (qual) =>
                                     qual.id === parseInt(item.qualification)
                                 )[0]?.name
-                              }
-                            </Td>
-                            <Td>
-                              {
-                                home.filter(
-                                  (qual) => qual.id === item.soliderhome
-                                )[0]?.departmentName
                               }
                             </Td>
                             <Td>
@@ -392,6 +474,28 @@ console.log(formattedDate); // Output: 1/1/2024 (for example)
                                 )[0]?.departmentName
                               }
                             </Td>
+                            <Td>{convertToArabicDigits(item.soliderSSn)}</Td>
+                            <Td>{convertToArabicDigits(item.phonenumber)}</Td>
+                            <Td>
+                              {
+                                home.filter(
+                                  (qual) => qual.id === item.soliderhome
+                                )[0]?.departmentName
+                              }
+                            </Td>
+                           
+                           
+                            <Td>
+                              {
+                                item.iskowa ? "قوة" : "ملحق"
+                              }
+                            </Td>
+                            <Td>
+                              {
+                                item.molahzat
+                              }
+                            </Td>
+
                             <Td>
                               <Button
                                 onClick={() => onClickEdit(item)}
